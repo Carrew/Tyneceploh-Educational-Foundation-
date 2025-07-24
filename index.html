@@ -2,110 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tyneceploh Educational Foundation</title>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Roboto&display=swap" rel="stylesheet" />
-  
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>School Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    /* Announcement Styles */
+    .announcement-section {
+      background-color: #fff3f8;
+      border-left: 6px solid #c2185b;
+      padding: 15px;
+      margin-top: 40px;
+      border-radius: 10px;
+      animation: fadeInDown 0.6s ease-out;
+    }
+
+    .announcement-section h2 {
+      color: #880e4f;
+      margin-top: 0;
+      font-weight: bold;
+    }
+
+    .announcement-section p {
+      font-size: 16px;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .dismiss-btn {
+      float: right;
+      background-color: #c2185b;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .dismiss-btn:hover {
+      background-color: #ad1457;
+    }
+  </style>
 </head>
 <body>
 
-  <header class="site-header">
-    <h1>Tyneceploh Educational Foundation</h1>
-    <p class="slogan">HOPE FOR THE FUTURE / BY GOD'S GRACE</p>
-  </header>
+  <!-- Your existing content stays untouched -->
 
-  <section class="section mission-vision">
-    <h2>Our Mission</h2>
-    <p>
-      Our mission is to provide an engaging, innovative and holistic experience that empowers all students to become responsible, productive citizens.
-    </p>
-    <h2>Our Vision</h2>
-    <p>
-      We aspire to be the school of choice, improving our community and society by opening doors and providing opportunities for every child, every day.
-    </p>
-  </section>
+  <!-- 📢 ANNOUNCEMENT DISPLAY START -->
+  <div id="announcementContainer" class="announcement-section" style="display: none;">
+    <button class="dismiss-btn" onclick="dismissAnnouncement()">Dismiss</button>
+    <h2>📢 Announcement</h2>
+    <p id="publicAnnouncementText">Loading...</p>
+  </div>
+  <!-- 📢 ANNOUNCEMENT DISPLAY END -->
 
-  <section class="section core-values">
-    <h2>Core Values</h2>
-    <ul>
-      <li><strong>PASSION:</strong> We cultivate an environment where work and learning are infused with desire and commitment. We recruit, develop and retain highly qualified employees who consistently exhibit a positive example, exemplary attitude, genuine caring and great enthusiasm.</li>
-      <li><strong>EXCELLENCE:</strong> Encouraging creativity and a pursuit of quality in every aspect of life.</li>
-      <li><strong>RESPECT:</strong> Regarding each person as an image bearer of Christ, in love, integrity, and openness.</li>
-      <li><strong>TRUTH:</strong> Learning, living and teaching in obedience to God's truth, discerning, engaging, and influencing culture with the hope of Christ's redemption.</li>
-    </ul>
-  </section>
+  <script>
+    function dismissAnnouncement() {
+      document.getElementById("announcementContainer").style.display = "none";
+      localStorage.setItem("announcementDismissed", "true");
+    }
 
-  <section class="section school-ode handwritten">
-    <h2>School Ode</h2>
-    <pre>
-We meet here from all walks of life
-From different homes and families
-We hope to be as one
-Foundation that so strong
-To keep us safe from strife
-We cross the Rubicon
-By trusting God alone
+    window.onload = function () {
+      const announcement = localStorage.getItem("schoolAnnouncement");
+      const dismissed = localStorage.getItem("announcementDismissed");
 
-Chorus
-
-Tyneceploh Educational Foundation
-Tyneceploh we love you
-Tyneceploh prepare our hearts for life here
-And life to come
-We are not the same
-On our way to face the world
-You've shown the way, you made us proud
-You've built us for good future
-
-(Chorus 2x)
-
-Written by: Vanii Kaizolu
-    </pre>
-  </section>
-
-  <section class="section history">
-    <h2>History</h2>
-    <p>
-      Tyneceploh Educational Foundation is a lifelong dream that has been realized in the absence of the dreamer, the late Margret Ploh Chattah. The special passion for child development which Mrs. Margret Ploh Chattah believed was a gift from God started to be actualized with a groundbreaking program on January 25, 2015. The construction of the building began in April 2015. Unfortunately, she got sick and was taken to India in June for treatment but never returned. This dream, championed by her widower Mr. Napoleon T. Chattah along with other well-wishers, germinated on September 3, 2018. Today, TEF is proud in fulfilling this dream while contributing to our country Liberia as indicated in Article 6 of our Constitution: providing equal access to educational opportunities and facilities for all citizens to the extent of available resources.
-    </p>
-  </section>
-
-  <section class="section policies">
-    <h2>Admissions Policy <button class="learn-more-btn" data-target="admissions.html">Learn More</button></h2>
-    <h2>Registration Policy <button class="learn-more-btn" data-target="registration.html">Learn More</button></h2>
-    <h2>Academic Policies <button class="learn-more-btn" data-target="academic.html">Learn More</button></h2>
-  </section>
-
-  <section class="section announcements">
-    <h2>Announcements</h2>
-    <div id="announcement-box">
-      <!-- Announcements will load here from backend -->
-      <p>No announcements at the moment.</p>
-    </div>
-  </section>
-
-  <section class="section result-lookup">
-    <h2>Check Your Results</h2>
-    <form id="resultForm">
-      <input type="text" id="studentPin" placeholder="Enter your result PIN" maxlength="10" required />
-      <button type="submit">Check Results</button>
-    </form>
-  </section>
-
-  <section class="section login-buttons">
-    <button onclick="location.href='login.html?role=teacher'">Teacher Login</button>
-    <button onclick="location.href='login.html?role=principal'">Principal Login</button>
-  </section>
-
-  <footer class="site-footer">
-    <p>Contact: 0778847625 / 0777545669 / 0886515669</p>
-    <p>Email: tyneceploheducational2018@gmail.com</p>
-    <p>Location: Rehab Road, ELWA, Liberia</p>
-  </footer>
-
-  <script src="script.js"></script>
+      if (announcement && dismissed !== "true") {
+        document.getElementById("publicAnnouncementText").textContent = announcement;
+        document.getElementById("announcementContainer").style.display = "block";
+      }
+    };
+  </script>
 </body>
-  </html>
+</html>
