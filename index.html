@@ -2,32 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>School Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tyneceploh Educational Foundation</title>
   <style>
+    /* Reset & fonts */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
+      background-color: #fbeaec;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 20px;
+      color: #4b2e2e;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #7b3f3f;
+      margin-top: 0;
+    }
+    a {
+      color: #c85a7c;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff0f5;
+      border-radius: 12px;
+      padding: 30px 40px;
+      box-shadow: 0 0 15px rgba(184, 104, 133, 0.3);
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* Buttons */
+    .btn-group {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .btn {
+      background-color: #7b3f3f;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      margin: 0 10px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      min-width: 160px;
+    }
+    .btn:hover {
+      background-color: #a15656;
     }
 
     /* Announcement Styles */
     .announcement-section {
-      background-color: #fff3f8;
+      background-color: #ffe6f0;
       border-left: 6px solid #c2185b;
-      padding: 15px;
-      margin-top: 40px;
+      padding: 20px;
       border-radius: 10px;
       animation: fadeInDown 0.6s ease-out;
+      position: relative;
+      margin-bottom: 30px;
     }
-
     .announcement-section h2 {
-      color: #880e4f;
       margin-top: 0;
       font-weight: bold;
+      color: #880e4f;
     }
-
     .announcement-section p {
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #4b2e2e;
+    }
+    .dismiss-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background-color: #c2185b;
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    .dismiss-btn:hover {
+      background-color: #ad1457;
     }
 
     @keyframes fadeInDown {
@@ -41,35 +115,184 @@
       }
     }
 
-    .dismiss-btn {
-      float: right;
-      background-color: #c2185b;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 13px;
+    /* Policy Sections */
+    .policy-section {
+      background: #f7c1d1;
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: none;
+      white-space: pre-wrap;
+      color: #4b2e2e;
+      font-weight: 600;
     }
 
-    .dismiss-btn:hover {
-      background-color: #ad1457;
+    /* Core values list */
+    ul.core-values {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    ul.core-values li {
+      background: #f7c1d1;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    /* Ode styling */
+    .school-ode {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 1.15em;
+      white-space: pre-wrap;
+      line-height: 1.4;
+      background: #fdeef4;
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      color: #7b3f3f;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media(max-width: 600px) {
+      .container {
+        padding: 20px 15px;
+      }
+      .btn {
+        margin: 10px 0;
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Your existing content stays untouched -->
+  <div class="container">
+    <header>
+      <h1>Tyneceploh Educational Foundation</h1>
+      <p><strong>Nursery - 9th Grade | Rehab Road, ELWA | After George Weah junction coming from Conex Filling Station</strong></p>
+      <p>Contact: 0778847625 / 0777545669 / 0886515669 | Email: tyneceploheducational2018@gmail.com</p>
+      <h3 style="font-style: italic; color: #c85a7c;">"Hope for the Future / By God's Grace"</h3>
+    </header>
 
-  <!-- 📢 ANNOUNCEMENT DISPLAY START -->
-  <div id="announcementContainer" class="announcement-section" style="display: none;">
-    <button class="dismiss-btn" onclick="dismissAnnouncement()">Dismiss</button>
-    <h2>📢 Announcement</h2>
-    <p id="publicAnnouncementText">Loading...</p>
+    <!-- Announcement -->
+    <section id="announcementContainer" class="announcement-section" style="display:none;">
+      <button class="dismiss-btn" onclick="dismissAnnouncement()">Dismiss</button>
+      <h2>📢 Announcement</h2>
+      <p id="publicAnnouncementText">Loading...</p>
+    </section>
+
+    <!-- Vision -->
+    <section>
+      <h2>Vision</h2>
+      <p>We aspire to be the school of choice, improving our community and society by opening doors and providing opportunities for every child, every day.</p>
+    </section>
+
+    <!-- Mission -->
+    <section>
+      <h2>Mission</h2>
+      <p>Our mission is to provide an engaging, innovative and holistic experience that empowers all students to become responsible, productive citizens.</p>
+    </section>
+
+    <!-- Core Values -->
+    <section>
+      <h2>Core Values</h2>
+      <ul class="core-values">
+        <li><strong>PASSION:</strong> We cultivate an environment where work and learning are infused with desire and commitment. We recruit, develop and retain highly qualified employees who consistently exhibit a positive example, exemplary attitude, genuine caring and great enthusiasm.</li>
+        <li><strong>EXCELLENCE:</strong> Encouraging creativity and a pursuit of quality in every aspect of life.</li>
+        <li><strong>RESPECT:</strong> Regarding each person as an image bearer of Christ, in love, integrity, and openness.</li>
+        <li><strong>TRUTH:</strong> Learning, living and teaching in obedience to God's truth, discerning, engaging, and influencing culture with the hope of Christ's redemption.</li>
+      </ul>
+    </section>
+
+    <!-- History -->
+    <section>
+      <h2>History</h2>
+      <p>Tyneceploh Educational Foundation is a lifelong dream that has been realized in the absence of the dreamer, the late Margret Ploh Chattah. The special passion for child development which Mrs. Margret Ploh Chattah believed was a gift from God started to be actualized with a groundbreaking program on January 25, 2015. The construction of the building began in April 2015 unfortunately she got sick and was taken to India in June for treatment but never returned. This dream championed by her widower Mr. Napoleon T. Chattah along with other well-wishers germinated on September 3, 2018. Today, TEF is proud in fulfilling this dream while contributing to our country Liberia as indicated in Article 6 of our Constitution: providing equal access to educational opportunities and facilities for all citizens to the extent of available resources.</p>
+    </section>
+
+    <!-- Slogan & Pledge -->
+    <section>
+      <h2>Slogan</h2>
+      <p>HOPE FOR THE FUTURE / BY GOD'S GRACE.</p>
+
+      <h3>Pledge</h3>
+      <p>By God's grace:</p>
+      <ul class="core-values">
+        <li>I will be respectful</li>
+        <li>I will be responsible</li>
+        <li>I will be peaceful</li>
+        <li>I will be an achiever</li>
+      </ul>
+    </section>
+
+    <!-- School Ode -->
+    <section>
+      <h2>School Ode</h2>
+      <div class="school-ode">
+We meet here from all walks of life  
+From different homes and families  
+We hope to be as one  
+Foundation that so strong  
+To keep us safe from strife  
+We cross the Rubicon  
+By trusting God alone  
+
+Chorus  
+Tyneceploh Educational Foundation  
+Tyneceploh we love you  
+Tyneceploh prepare our hearts for life here  
+And life to come  
+We are not the same  
+On our way to face the world  
+You've shown the way, you made us proud  
+You've built us for good future  
+
+(Chorus 2x)  
+Written by: Vanii Kaizolu
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section class="btn-group">
+      <button class="btn" onclick="window.location.href='results.html'">Check Results</button>
+      <button class="btn" onclick="togglePolicy('admissionPolicy')">Admission Policy</button>
+      <button class="btn" onclick="togglePolicy('registrationPolicy')">Registration Policy</button>
+      <button class="btn" onclick="togglePolicy('academicPolicies')">Academic Policies</button>
+    </section>
+
+    <!-- Policy Details -->
+    <section id="admissionPolicy" class="policy-section">
+      Anyone wishing to be admitted into Tyneceploh Educational Foundation must meet the following requirements:
+      1. Successfully pass entrance exam and interview
+      2. Submit a filled in purchased admission form
+      3. Attached two (2) passport size photos to admission form
+      4. Provide recent medical certificate
+      5. Letters of Recommendation, one(1) from past school and one (1) from pastor or Community leader
+      6. Submit an official transcript from past school
+      7. Submit all requirement in one Manilla folder
+    </section>
+
+    <section id="registrationPolicy" class="policy-section">
+      The submission of all the requirements plus payment of fees according to payment plan completes the registration.
+    </section>
+
+    <section id="academicPolicies" class="policy-section">
+      While we endeavor to seek academic excellence, we subscribe to the Ministry of Education Minimum passing grade of 70%. However we encourage students to strive for higher marks by regularly recognizing and rewarding gifts or promotion.
+      Students who maintain 95% average from first period through the first semester will be promoted to the next class except where the student is in the highest class of the school.
+      Students failing in one subject in the average for the year will be promoted under condition and is compelled to attend the enrichment classes but will still have to be monitored during the first period in the new class.
+      Students failing in two (2) or more subjects repeat the class.
+    </section>
+
   </div>
-  <!-- 📢 ANNOUNCEMENT DISPLAY END -->
+
+  <footer style="text-align:center; margin: 30px 0 10px 0; color:#7b3f3f;">
+    &copy; 2025 Tyneceploh Educational Foundation. All rights reserved.
+  </footer>
 
   <script>
+    // Announcement dismiss logic
     function dismissAnnouncement() {
       document.getElementById("announcementContainer").style.display = "none";
       localStorage.setItem("announcementDismissed", "true");
@@ -84,6 +307,24 @@
         document.getElementById("announcementContainer").style.display = "block";
       }
     };
+
+    // Toggle policy sections
+    function togglePolicy(id) {
+      const section = document.getElementById(id);
+      if (!section) return;
+
+      if (section.style.display === "block") {
+        section.style.display = "none";
+      } else {
+        // Hide all policies first
+        const policies = document.querySelectorAll('.policy-section');
+        policies.forEach(policy => policy.style.display = 'none');
+
+        // Show selected policy
+        section.style.display = "block";
+        section.scrollIntoView({behavior: "smooth"});
+      }
+    }
   </script>
 </body>
 </html>
