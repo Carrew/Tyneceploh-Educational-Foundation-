@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Principal Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #ffc0cb, #8b5e3c); /* Pink to Brown */
+      color: #333;
+    }
+    header {
+      background-color: #5a2d0c;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #8b0000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #a52a2a;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tyneceploh Principal Dashboard</h1>
+  </header>
+
+  <div class="container">
+    <h2>Welcome, Principal</h2>
+
+    <div class="section">
+      <h3>📢 Announcements</h3>
+      <p>Here you’ll be able to add or edit announcements for students and staff.</p>
+    </div>
+
+    <div class="section">
+      <h3>📊 Approvals</h3>
+      <p>Approve grades, subjects, or student registrations submitted by teachers.</p>
+    </div>
+
+    <div class="section">
+      <h3>💰 Financial Records</h3>
+      <p>Access and manage student fee data. (Coming soon)</p>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    function logout() {
+      sessionStorage.removeItem("isPrincipalLoggedIn");
+      window.location.href = "principal-login.html";
+    }
+
+    // Protect page access
+    if (!sessionStorage.getItem("isPrincipalLoggedIn")) {
+      window.location.href = "principal-login.html";
+    }
+  </script>
+</body>
+</html>
