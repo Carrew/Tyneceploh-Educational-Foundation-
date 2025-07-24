@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Principal Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffe6f0;
+      padding: 2rem;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logout {
+      padding: 0.5rem 1rem;
+      background: brown;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <h1>Welcome, Principal</h1>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="box">
+    <h2>Dashboard Sections (Coming Soon)</h2>
+    <ul>
+      <li>📣 Announcements Editor</li>
+      <li>💰 Financial Records Control</li>
+      <li>🧾 Result Approval</li>
+    </ul>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+      </html>
