@@ -6,77 +6,130 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f6f0f2;
+      background-color: #ffe6f0;
+      color: #3e2723;
       padding: 20px;
     }
+
     h1 {
-      color: #b76e79;
+      color: #880e4f;
     }
-    .section {
-      margin-bottom: 30px;
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fff0f5;
+      border: 2px solid #d48a9c;
       padding: 20px;
-      background: #fff;
-      border: 2px solid #d1a4ab;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 0 10px #e8b7c8;
     }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    label, input, button {
+      display: block;
+      margin: 10px 0;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d48a9c;
+      border-radius: 5px;
+    }
+
     button {
-      padding: 10px 15px;
-      background-color: #b76e79;
+      background-color: brown;
       color: white;
       border: none;
-      border-radius: 5px;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
     }
+
     button:hover {
-      background-color: #a05863;
+      background-color: #a52a2a;
     }
-    .logout-button {
+
+    .logout {
       float: right;
-      margin: 10px;
-      background-color: brown;
+      background-color: #b71c1c;
+    }
+
+    /* Announcement display style */
+    .announcement-box {
+      background-color: #ffe0eb;
+      border-left: 6px solid #d81b60;
+      padding: 15px;
+      margin-top: 30px;
+      animation: slideIn 0.6s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .bold-text {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Principal Dashboard</h1>
+    <button class="logout" onclick="logout()">Logout</button>
 
-  <!-- Logout Button -->
-  <button class="logout-button" onclick="logout()">Logout</button>
+    <!-- Add more sections here as needed -->
 
-  <h1>Principal Dashboard</h1>
+    <div class="section">
+      <h2>Post New Announcement</h2>
+      <label for="announcementInput">Enter Announcement:</label>
+      <textarea id="announcementInput" rows="4"></textarea>
+      <button onclick="saveAnnouncement()">Save Announcement</button>
+    </div>
 
-  <div class="section">
-    <h2>Announcements</h2>
-    <p>Edit or post announcements here.</p>
-    <!-- Your announcement management code goes here -->
-  </div>
-
-  <div class="section">
-    <h2>Financial Records</h2>
-    <p>Edit and approve financial data for students here.</p>
-    <!-- Your financial editing code goes here -->
-  </div>
-
-  <div class="section">
-    <h2>Approve Grades</h2>
-    <p>Review and approve submitted grades from teachers.</p>
-    <!-- Your grade approval section -->
+    <div class="section announcement-box">
+      <h3 class="bold-text">📢 Current Announcement</h3>
+      <p id="announcementDisplay">No announcement yet.</p>
+    </div>
   </div>
 
   <script>
-    // Login protection
+    function logout() {
+      sessionStorage.removeItem('loggedInPrincipal');
+      window.location.href = "index.html";
+    }
+
+    function saveAnnouncement() {
+      const announcement = document.getElementById('announcementInput').value.trim();
+      if (announcement !== "") {
+        localStorage.setItem('schoolAnnouncement', announcement);
+        document.getElementById('announcementDisplay').textContent = announcement;
+        alert("Announcement posted successfully!");
+        document.getElementById('announcementInput').value = "";
+      } else {
+        alert("Please enter a valid announcement.");
+      }
+    }
+
+    // Load existing announcement from localStorage
     window.onload = function () {
-      if (sessionStorage.getItem("isPrincipalLoggedIn") !== "true") {
-        window.location.href = "principal-login.html";
+      const savedAnnouncement = localStorage.getItem('schoolAnnouncement');
+      if (savedAnnouncement) {
+        document.getElementById('announcementDisplay').textContent = savedAnnouncement;
       }
     };
-
-    // Logout function
-    function logout() {
-      sessionStorage.removeItem("isPrincipalLoggedIn");
-      window.location.href = "principal-login.html";
-    }
   </script>
-
 </body>
 </html>
