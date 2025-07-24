@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grade Input Table</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .red {
+      color: red;
+    }
+    .blue {
+      color: blue;
+    }
+    .btn {
+      padding: 5px 10px;
+      margin: 5px;
+    }
+    .student-block {
+      margin-bottom: 30px;
+      border: 2px solid #ccc;
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Enter Students' Grades</h2>
+  <button onclick="addStudent()">Add Student</button>
+
+  <div id="studentsContainer"></div>
+
+  <script>
+    function addStudent() {
+      const container = document.getElementById("studentsContainer");
+
+      const studentDiv = document.createElement("div");
+      studentDiv.className = "student-block";
+
+      // Name & Period inputs
+      const nameLabel = document.createElement("label");
+      nameLabel.textContent = "Student Name: ";
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.className = "studentName";
+
+      const periodLabel = document.createElement("label");
+      periodLabel.style.marginLeft = "20px";
+      periodLabel.textContent = "Period: ";
+      const periodInput = document.createElement("input");
+      periodInput.type = "text";
+      periodInput.className = "studentPeriod";
+
+      const addSubjectBtn = document.createElement("button");
+      addSubjectBtn.textContent = "Add Subject";
+      const submitBtn = document.createElement("button");
+      submitBtn.textContent = "Submit";
+
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      thead.innerHTML = `
+        <tr>
+          <th>Subject</th>
+          <th>Grade</th>
+          <th>Delete</th>
+        </tr>
+      `;
+
+      const tbody = document.createElement("tbody");
+      const tfoot = document.createElement("tfoot");
+      const avgRow = document.createElement("tr");
+      avgRow.innerHTML = `
+        <td><strong>Average</strong></td>
+        <td id="averageCell" colspan="2"></td>
+      `;
+      tfoot.appendChild(avgRow);
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      table.appendChild(tfoot);
+
+      let submitted = false;
+
+      addSubjectBtn.onclick = function () {
+        if (submitted) return;
+
+        const tr = document.createElement("tr");
+
+        const subjectTd = document.createElement("td");
+        const subjectInput = document.createElement("input");
+        subjectInput.type = "text";
+        subjectTd.appendChild(subjectInput);
+
+        const gradeTd = document.createElement("td");
+        const gradeInput = document.createElement("input");
+        gradeInput.type = "number";
+        gradeInput.oninput = () => updateColorsAndAverage(tbody, avgRow);
+        gradeTd.appendChild(gradeInput);
+
+        const deleteTd = document.createElement("td");
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.onclick = () => {
+          if (!submitted) {
+            tr.remove();
+            updateColorsAndAverage(tbody, avgRow);
+          }
+        };
+        deleteTd.appendChild(deleteBtn);
+
+        tr.appendChild(subjectTd);
+        tr.appendChild(gradeTd);
+        tr.appendChild(deleteTd);
+
+        tbody.appendChild(tr);
+      };
+
+      submitBtn.onclick = function () {
+        submitted = true;
+        const inputs = studentDiv.querySelectorAll("input");
+        inputs.forEach(input => input.disabled = true);
+        const buttons = studentDiv.querySelectorAll("button");
+        buttons.forEach(btn => {
+          if (btn.textContent === "Delete") btn.disabled = true;
+        });
+      };
+
+      // Append inputs
+      studentDiv.appendChild(nameLabel);
+      studentDiv.appendChild(nameInput);
+      studentDiv.appendChild(periodLabel);
+      studentDiv.appendChild(periodInput);
+      studentDiv.appendChild(document.createElement("br"));
+      studentDiv.appendChild(addSubjectBtn);
+      studentDiv.appendChild(submitBtn);
+      studentDiv.appendChild(table);
+
+      container.appendChild(studentDiv);
+    }
+
+    function updateColorsAndAverage(tbody, avgRow) {
+      const rows = tbody.querySelectorAll("tr");
+      let total = 0;
+      let count = 0;
+
+      rows.forEach(row => {
+        const gradeInput = row.cells[1].querySelector("input");
+        const grade = parseInt(gradeInput.value);
+        if (!isNaN(grade)) {
+          count++;
+          total += grade;
+          if (grade < 70) {
+            gradeInput.className = "red";
+          } else {
+            gradeInput.className = "blue";
+          }
+        } else {
+          gradeInput.className = "";
+        }
+      });
+
+      const avgCell = avgRow.querySelector("#averageCell");
+      avgCell.textContent = count > 0 ? (total / count).toFixed(2) : "";
+    }
+  </script>
+
+</body>
+  </html>
