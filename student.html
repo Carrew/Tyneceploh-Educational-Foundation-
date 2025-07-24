@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Results - Tyneceploh Educational Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>Student Results</h1>
+  </header>
+
+  <main class="section" id="results-section">
+    <p>Loading results...</p>
+  </main>
+
+  <footer class="site-footer">
+    <button onclick="location.href='index.html'">Back to Homepage</button>
+  </footer>
+
+  <script>
+    // Function to get URL parameter by name
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const resultsSection = document.getElementById("results-section");
+      const pin = getQueryParam("pin");
+
+      if (!pin) {
+        resultsSection.innerHTML = "<p>Error: No PIN provided. Please go back and enter your result PIN.</p>";
+        return;
+      }
+
+      // Placeholder: simulate fetching results from backend
+      // Replace this with actual backend call later
+      const dummyResults = {
+        "A12345": {
+          name: "John Doe",
+          grades: {
+            Math: 85,
+            English: 90,
+            Science: 78,
+            History: 88,
+            "Final Exam": 92
+          }
+        },
+        "B67890": {
+          name: "Jane Smith",
+          grades: {
+            Math: 92,
+            English: 89,
+            Science: 95,
+            History: 90,
+            "Final Exam": 94
+          }
+        }
+      };
+
+      const studentData = dummyResults[pin];
+
+      if (!studentData) {
+        resultsSection.innerHTML = `<p>No results found for PIN: <strong>${pin}</strong>. Please check your PIN and try again.</p>`;
+        return;
+      }
+
+      // Build results table
+      let html = `<h2>Results for ${studentData.name}</h2>`;
+      html += `<table class="results-table">
+        <thead>
+          <tr><th>Subject</th><th>Score</th></tr>
+        </thead><tbody>`;
+
+      for (const [subject, score] of Object.entries(studentData.grades)) {
+        html += `<tr><td>${subject}</td><td>${score}</td></tr>`;
+      }
+      html += "</tbody></table>";
+
+      resultsSection.innerHTML = html;
+    });
+  </script>
+
+</body>
+</html>
