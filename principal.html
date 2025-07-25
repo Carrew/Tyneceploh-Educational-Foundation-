@@ -1,106 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Principal Dashboard - Tyneceploh Educational Foundation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Principal Dashboard</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 20px;
-      background: #fff0f5;
-      color: #4b2e2e;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
     }
-    h1, h2 {
-      color: #7b3f3f;
+    header {
+      background: #222;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
     }
-    label {
-      font-weight: bold;
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
     }
-    input[type="file"], textarea {
-      margin-top: 8px;
-      margin-bottom: 15px;
-      padding: 10px;
+    section {
+      background: #fff;
       border-radius: 10px;
-      border: 1px solid #c85a7c;
-      width: 100%;
-      font-size: 16px;
-      resize: vertical;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    button {
-      background-color: #7b3f3f;
-      color: white;
+    section h2 {
+      margin-top: 0;
+      color: #444;
+    }
+    .btn {
+      padding: 8px 15px;
+      background: #333;
+      color: #fff;
       border: none;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-weight: bold;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 10px;
     }
-    button:hover {
-      background-color: #a15656;
+    .btn:hover {
+      background: #555;
     }
-    .success-msg {
-      color: green;
-      font-weight: bold;
-      margin-top: 10px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 0.7rem;
+      text-align: left;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Principal Dashboard</h1>
+  </header>
+  <div class="container"><!-- Finance Section -->
+<section>
+  <h2>📂 Finance</h2>
+  <p>Update or view fees paid by students.</p>
+  <input type="text" placeholder="Enter student ID" />
+  <input type="text" placeholder="Enter amount paid" />
+  <button class="btn">Update Record</button>
+</section>
 
-  <h1>Principal Dashboard</h1>
+<!-- Teacher Account Control -->
+<section>
+  <h2>👨‍🏫 Teacher Account Control</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td>Mr. Doe</td>
+      <td>Active</td>
+      <td><button class="btn">Deactivate</button></td>
+    </tr>
+    <tr>
+      <td>Ms. Smith</td>
+      <td>Inactive</td>
+      <td><button class="btn">Activate</button></td>
+    </tr>
+  </table>
+</section>
 
-  <!-- Logo Upload -->
-  <section>
-    <h2>Upload School Logo</h2>
-    <input type="file" id="logoUpload" accept="image/*" />
-    <p id="uploadStatus" class="success-msg" style="display:none;">Logo uploaded successfully!</p>
-  </section>
+<!-- Student ID Generator & Listing -->
+<section>
+  <h2>🧑‍🎓 Student Management</h2>
+  <input type="text" placeholder="Enter student name" />
+  <button class="btn">Generate ID</button>
+  <h3>Student List</h3>
+  <table>
+    <tr>
+      <th>Student Name</th>
+      <th>ID</th>
+    </tr>
+    <tr>
+      <td>Jane Doe</td>
+      <td>TEF2025-0001</td>
+    </tr>
+    <tr>
+      <td>John Smith</td>
+      <td>TEF2025-0002</td>
+    </tr>
+  </table>
+</section>
 
-  <!-- Announcement -->
-  <section>
-    <h2>Post Announcement</h2>
-    <label for="announcementText">Announcement Text:</label>
-    <textarea id="announcementText" rows="4" placeholder="Write announcement here..."></textarea>
-    <button onclick="postAnnouncement()">Post Announcement</button>
-    <p id="announceStatus" class="success-msg" style="display:none;">Announcement posted successfully!</p>
-  </section>
+<!-- Grade Approval -->
+<section>
+  <h2>✅ Grade Approval</h2>
+  <table>
+    <tr>
+      <th>Teacher</th>
+      <th>Subject</th>
+      <th>Class</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td>Mr. Mark</td>
+      <td>Mathematics</td>
+      <td>Grade 6</td>
+      <td>Pending</td>
+      <td>
+        <button class="btn">Approve</button>
+        <button class="btn">Reject</button><br>
+        <input type="text" placeholder="Reason for rejection (if any)" />
+      </td>
+    </tr>
+  </table>
+</section>
 
-  <script>
-    // Logo upload to localStorage
-    document.getElementById('logoUpload').addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const base64String = e.target.result;
-        localStorage.setItem('schoolLogo', base64String);
-        document.getElementById('uploadStatus').style.display = 'block';
-        setTimeout(() => {
-          document.getElementById('uploadStatus').style.display = 'none';
-        }, 3000);
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // Post announcement to localStorage
-    function postAnnouncement() {
-      const textArea = document.getElementById('announcementText');
-      const text = textArea.value.trim();
-      if (!text) {
-        alert('Please enter announcement text.');
-        return;
-      }
-      localStorage.setItem('schoolAnnouncement', text);
-      document.getElementById('announceStatus').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('announceStatus').style.display = 'none';
-      }, 3000);
-      textArea.value = '';
-    }
-  </script>
+  </div>
 </body>
 </html>
