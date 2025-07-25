@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+    }
+    .input-area {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      display: none;
+      background: #fff;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+    th {
+      background: #333;
+      color: white;
+    }
+    .red {
+      color: red;
+      font-weight: bold;
+    }
+    .blue {
+      color: blue;
+      font-weight: bold;
+    }
+    #printBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Student Result Checker</h2>
+
+  <div class="input-area">
+    <input type="text" id="studentName" placeholder="Enter Student Name" required />
+    <input type="password" id="studentPIN" placeholder="Enter PIN" required />
+    <button onclick="checkResult()">Check Result</button>
+  </div>
+
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Subject</th>
+        <th>1st</th>
+        <th>2nd</th>
+        <th>3rd</th>
+        <th>Semester Exam</th>
+        <th>Semester Avg</th>
+        <th>4th</th>
+        <th>5th</th>
+        <th>6th</th>
+        <th>Final Exam</th>
+        <th>Year Avg</th>
+      </tr>
+    </thead>
+    <tbody id="resultBody">
+      <!-- Results will appear here -->
+    </tbody>
+  </table>
+
+  <div style="text-align:center">
+    <button id="printBtn" onclick="window.print()">Print Result</button>
+  </div>
+
+  <script>
+    function checkResult() {
+      const name = document.getElementById('studentName').value;
+      const pin = document.getElementById('studentPIN').value;
+
+      if (pin !== "1234") {
+        alert("Incorrect PIN. Try again.");
+        return;
+      }
+
+      const subjects = ["Math", "English", "Science"];
+      const tableBody = document.getElementById("resultBody");
+      tableBody.innerHTML = ""; // clear old data
+
+      subjects.forEach(subject => {
+        const scores = Array.from({ length: 10 }, () => Math.floor(Math.random() * 41 + 60)); // random 60–100
+        const semAvg = Math.round((scores[0] + scores[1] + scores[2] + scores[3]) / 4);
+        const yrAvg = Math.round((scores[4] + scores[5] + scores[6] + scores[7] + scores[8] + scores[9]) / 6);
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${subject}</td>
+          ${scores.map(score => `<td class="${score < 70 ? 'red' : 'blue'}">${score}</td>`).join('')}
+          <td class="${semAvg < 70 ? 'red' : 'blue'}">${semAvg}</td>
+          <td class="${yrAvg < 70 ? 'red' : 'blue'}">${yrAvg}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      document.getElementById("resultTable").style.display = "table";
+      document.getElementById("printBtn").style.display = "inline-block";
+    }
+  </script>
+</body>
+</html>
