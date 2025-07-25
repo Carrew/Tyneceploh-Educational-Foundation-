@@ -2,312 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tyneceploh Educational Foundation</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #fdf6f9;
-      color: #4b2c3a;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    #schoolLogo {
-      max-width: 120px;
-      display: block;
-      margin: 0 auto 10px auto;
-      border-radius: 10px;
-    }
-    h1 {
+      background-color: #fff;
       margin: 0;
-      color: #a14a6a;
-      font-weight: 900;
-      font-size: 2.6em;
+      padding: 0;
     }
-    /* Announcement Styles */
-    .announcement-section {
-      background-color: #fff3f8;
-      border-left: 6px solid #c2185b;
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 10px;
-      animation: fadeInDown 0.6s ease-out;
-      position: relative;
+    header {
+      background-color: pink;
+      color: brown;
+      padding: 1rem;
+      text-align: center;
     }
-
-    .announcement-section h2 {
-      color: #880e4f;
-      margin-top: 0;
-      font-weight: bold;
-      font-size: 1.3em;
+    nav {
+      background-color: brown;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0.5rem;
     }
-
-    .announcement-section p {
-      font-size: 16px;
-      margin-bottom: 0;
-    }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .dismiss-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #c2185b;
+    nav a {
       color: white;
-      border: none;
-      padding: 5px 10px;
+      margin: 0.5rem;
+      text-decoration: none;
+      background-color: #a0522d;
+      padding: 0.5rem 1rem;
       border-radius: 5px;
-      cursor: pointer;
-      font-size: 13px;
     }
-
-    .dismiss-btn:hover {
-      background-color: #ad1457;
+    nav a:hover {
+      background-color: #8b4513;
     }
-
-    /* Navigation Buttons */
-    .btn-container {
+    .announcement {
+      background-color: yellow;
+      color: red;
+      font-weight: bold;
       text-align: center;
-      margin: 25px 0;
+      padding: 1rem;
+      animation: blink 1.5s infinite;
     }
-    .btn {
-      background-color: #a14a6a;
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      margin: 5px 8px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      min-width: 160px;
+    @keyframes blink {
+      0% {opacity: 1;}
+      50% {opacity: 0;}
+      100% {opacity: 1;}
     }
-    .btn:hover {
-      background-color: #880e4f;
-    }
-
-    /* Policy Sections */
-    .policy-content {
-      display: none;
-      background-color: #fdeff4;
-      border: 1px solid #a14a6a;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
-      line-height: 1.5em;
-    }
-
-    /* Content Sections */
-    section {
-      margin-bottom: 30px;
-    }
-    section h2 {
-      border-bottom: 2px solid #a14a6a;
-      padding-bottom: 5px;
-      margin-bottom: 15px;
-      font-weight: 700;
-      color: #6d3355;
-    }
-    section p, section ul {
-      font-size: 1em;
-      color: #4b2c3a;
-    }
-    ul {
-      padding-left: 20px;
-    }
-
-    /* Contact & Footer */
-    footer {
+    .main {
+      padding: 2rem;
       text-align: center;
-      font-size: 14px;
-      color: #a97b90;
-      margin-top: 40px;
-      padding-top: 15px;
-      border-top: 1px solid #d7c2cb;
+    }
+    .contact {
+      background-color: #f4f4f4;
+      padding: 1rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+  <header>
+    <img src="logo.png" alt="School Logo" style="height: 80px;"><br>
+    <h1>Tyneceploh Educational Foundation</h1>
+  </header>
 
-<header>
-  <!-- School Logo if uploaded -->
-  <img id="schoolLogo" src="" alt="School Logo" style="display:none;" />
-  <h1>Tyneceploh Educational Foundation</h1>
-  <p><em>Nursery - 9th Grade | Rehab Road, ELWA</em></p>
-  <p>Contact: 0778847625 / 0777545669 / 0886515669 | Email: tyneceploheducational2018@gmail.com</p>
-</header>
+  <div class="announcement" id="announcementBar">
+    Welcome back students! 1st Semester Results will be released soon. <button onclick="this.parentElement.style.display='none'">Dismiss</button>
+  </div>
 
-<!-- Announcement -->
-<div id="announcementContainer" class="announcement-section" style="display:none;">
-  <button class="dismiss-btn" onclick="dismissAnnouncement()">Dismiss</button>
-  <h2>📢 Announcement</h2>
-  <p id="publicAnnouncementText">Loading...</p>
-</div>
+  <nav>
+    <a href="result.html">Check Result</a>
+    <a href="teacher.html">Teacher Login</a>
+    <a href="principal.html">Principal Login</a>
+    <a href="#">Registration Policy</a>
+    <a href="#">Admission Policy</a>
+  </nav>
 
-<!-- Navigation Buttons -->
-<div class="btn-container">
-  <button class="btn" onclick="window.location.href='results.html'">Check Results</button>
-  <button class="btn" onclick="togglePolicy('admissionPolicy')">Admission Policy</button>
-  <button class="btn" onclick="togglePolicy('registrationPolicy')">Registration Policy</button>
-  <button class="btn" onclick="togglePolicy('academicPolicy')">Academic Policies</button>
-  <button class="btn" onclick="window.location.href='login.html'">Staff Login</button>
-</div>
+  <div class="main">
+    <p>Welcome to the official website of Tyneceploh Educational Foundation. We are committed to excellence in Nursery through 9th Grade education.</p>
+    <p>Learn more about our programs, policies, and announcements here on our platform.</p>
+  </div>
 
-<!-- Policies -->
-<div id="admissionPolicy" class="policy-content">
-  <h3>Admission Policy</h3>
-  <p>Anyone wishing to be admitted into Tyneceploh Educational Foundation must meet the following requirements:</p>
-  <ol>
-    <li>Successfully pass entrance exam and interview</li>
-    <li>Submit a filled in purchased admission form</li>
-    <li>Attach two (2) passport size photos to admission form</li>
-    <li>Provide recent medical certificate</li>
-    <li>Letters of Recommendation, one (1) from past school and one (1) from pastor or community leader</li>
-    <li>Submit an official transcript from past school</li>
-    <li>Submit all requirements in one Manilla folder</li>
-  </ol>
-</div>
-
-<div id="registrationPolicy" class="policy-content">
-  <h3>Registration Policy</h3>
-  <p>The submission of all the requirements plus payment of fees according to payment plan completes the registration.</p>
-</div>
-
-<div id="academicPolicy" class="policy-content">
-  <h3>Academic Policies</h3>
-  <p>While we endeavor to seek academic excellence, we subscribe to the Ministry of Education minimum passing grade of 70%. However, we encourage students to strive for higher marks by regular recognition and reward of gifts or promotion.</p>
-  <p>Students who maintain 95% average from first period through the first semester will be promoted to the next class except where the student is in the highest class of the school.</p>
-  <p>Students failing in one subject in the average for the year will be promoted under condition and are compelled to attend the enrichment classes but will still have to be monitored during the first period in the new class.</p>
-  <p>Students failing in two (2) or more subjects repeat the class.</p>
-</div>
-
-<!-- Content Sections -->
-
-<section>
-  <h2>Vision</h2>
-  <p>We aspire to be the school of choice, improving our community and society by opening doors and providing opportunities for every child, every day.</p>
-</section>
-
-<section>
-  <h2>Mission</h2>
-  <p>Our mission is to provide an engaging, innovative and holistic experience that empowers all students to become responsible, productive citizens.</p>
-</section>
-
-<section>
-  <h2>Core Values</h2>
-  <ul>
-    <li><strong>PASSION:</strong> We cultivate an environment where work and learning are infused with desire and commitment. We recruit, develop and retain highly qualified employees who consistently exhibit a positive example, exemplary attitude, genuine caring and great enthusiasm.</li>
-    <li><strong>EXCELLENCE:</strong> Encouraging creativity and a pursuit of quality in every aspect of life.</li>
-    <li><strong>RESPECT:</strong> Regarding each person as an image bearer of Christ, in love, integrity, and openness.</li>
-    <li><strong>TRUTH:</strong> Learning, living and teaching in obedience to God's truth, discerning, engaging, and influencing culture with the hope of Christ's redemption.</li>
-  </ul>
-</section>
-
-<section>
-  <h2>History</h2>
-  <p>Tyneceploh Educational Foundation is a lifelong dream that has been realized in the absence of the dreamer, the late Margret Ploh Chattah. The special passion for child development which Mrs. Margret Ploh Chattah believed was a gift from God started to be actualized with a groundbreaking program on January 25, 2015. The construction of the building began in April 2015 unfortunately she got sick and was taken to India in June for treatment but never returned. This dream championed by her widower Mr. Napoleon T. Chattah along with other well-wishers germinated on September 3, 2018. Today, TEF is proud in fulfilling this dream while contributing to our country Liberia as indicated in Article 6 of our Constitution: providing equal access to educational opportunities and facilities for all citizens to the extent of available resources.</p>
-</section>
-
-<section>
-  <h2>Slogan</h2>
-  <p><em>HOPE FOR THE FUTURE / BY GOD'S GRACE.</em></p>
-</section>
-
-<section>
-  <h2>Pledge</h2>
-  <p>By God's grace:</p>
-  <ul>
-    <li>I will be respectful</li>
-    <li>I will be responsible</li>
-    <li>I will be peaceful</li>
-    <li>I will be an achiever</li>
-  </ul>
-</section>
-
-<section>
-  <h2>School Ode</h2>
-  <p><em>
-    We meet here from all walks of life<br>
-    From different homes and families<br>
-    We hope to be as one<br>
-    Foundation that so strong<br>
-    To keep us safe from strife<br>
-    We cross the Rubicon<br>
-    By trusting God alone<br>
-  </em></p>
-  <p><strong>Chorus</strong></p>
-  <p><em>
-    Tyneceploh Educational Foundation<br>
-    Tyneceploh we love you<br>
-    Tyneceploh prepare our hearts for life here<br>
-    And life to come<br>
-    We are not the same<br>
-    On our way to face the world<br>
-    You've shown the way, you made us proud<br>
-    You've built us for good future<br>
-  </em></p>
-  <p><strong>(Chorus 2x)</strong></p>
-  <p><em>Written by: Vanii Kaizolu</em></p>
-</section>
-
-<footer>
-  <p>© 2025 Tyneceploh Educational Foundation. All rights reserved.</p>
-</footer>
-
-<script>
-  // Show/hide policy sections
-  function togglePolicy(id) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (el.style.display === 'block') {
-      el.style.display = 'none';
-    } else {
-      el.style.display = 'block';
-      // Optionally scroll to the opened policy
-      el.scrollIntoView({behavior: 'smooth'});
-    }
-  }
-
-  // Announcement dismiss
-  function dismissAnnouncement() {
-    document.getElementById("announcementContainer").style.display = "none";
-    localStorage.setItem("announcementDismissed", "true");
-  }
-
-  window.onload = function () {
-    // Display school logo if available in localStorage
-    const logo = localStorage.getItem("schoolLogo");
-    if (logo) {
-      const img = document.getElementById("schoolLogo");
-      img.src = logo;
-      img.style.display = "block";
-    }
-
-    // Show announcement if exists and not dismissed
-    const announcement = localStorage.getItem("schoolAnnouncement");
-    const dismissed = localStorage.getItem("announcementDismissed");
-    if (announcement && dismissed !== "true") {
-      document.getElementById("publicAnnouncementText").textContent = announcement;
-      document.getElementById("announcementContainer").style.display = "block";
-    }
-  };
-</script>
-
+  <div class="contact">
+    <p>Contact us:</p>
+    <p>Phone: 0778847625 / 0777515669 / 0886515669</p>
+    <p>Email: tyneceploheducational2018@gmail.com</p>
+  </div>
 </body>
 </html>
