@@ -11,170 +11,113 @@
       margin: 0;
       padding: 0;
     }
+
     header {
-      background-color: pink;
-      color: brown;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav {
-      background-color: brown;
+      background-color: #b76e79;
+      color: white;
+      padding: 10px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
     }
+
+    header img {
+      height: 50px;
+    }
+
     nav a {
       color: white;
-      margin: 0.5rem;
       text-decoration: none;
-      background-color: #a0522d;
-      padding: 0.5rem 1rem;
+      margin: 0 10px;
+    }
+
+    .announcement {
+      background-color: pink;
+      padding: 10px;
+      color: #333;
+      text-align: center;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    footer {
+      background-color: #b76e79;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #b76e79;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
       border-radius: 5px;
     }
-    nav a:hover {
-      background-color: #8b4513;
-    }
-    .announcement {
-      background-color: yellow;
-      color: red;
-      font-weight: bold;
-      text-align: center;
-      padding: 1rem;
-      animation: blink 1.5s infinite;
-    }
-    @keyframes blink {
-      0% {opacity: 1;}
-      50% {opacity: 0;}
-      100% {opacity: 1;}
-    }
-    .main {
-      padding: 2rem;
-      text-align: center;
-    }
-    .contact {
-      background-color: #f4f4f4;
-      padding: 1rem;
-      text-align: center;
+
+    button:hover {
+      background-color: #a55c66;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="School Logo" style="height: 80px;"><br>
-    <h1>Tyneceploh Educational Foundation</h1>
-  </header>
 
-  <div class="announcement" id="announcementBar">
-    Welcome back students! 1st Semester Results will be released soon. <button onclick="this.parentElement.style.display='none'">Dismiss</button>
-  </div>
-
+<header>
+  <img src="logo.png" alt="School Logo" />
   <nav>
-    <a href="result.html">Check Result</a>
-    <a href="teacher.html">Teacher Login</a>
-    <a href="principal.html">Principal Login</a>
-    <a href="#">Registration Policy</a>
-    <a href="#">Admission Policy</a>
+    <a href="index.html">Home</a>
+    <a href="check-result.html">Check Result</a>
+    <a href="teacher.html">Teacher</a>
+    <a href="principal.html">Principal</a>
+    <a href="about.html">About</a>
   </nav>
+</header>
 
-  <div class="main">
-    <p>Welcome to the official website of Tyneceploh Educational Foundation. We are committed to excellence in Nursery through 9th Grade education.</p>
-    <p>Learn more about our programs, policies, and announcements here on our platform.</p>
-  </div>
+<div class="announcement" id="announcementBar">
+  <p>Welcome back students! 1st Semester Results will be released soon.</p>
+  <button onclick="this.parentElement.style.display='none'">Dismiss</button>
+</div>
 
-  <div class="contact">
-    <p>Contact us:</p>
-    <p>Phone: 0778847625 / 0777515669 / 0886515669</p>
-    <p>Email: tyneceploheducational2018@gmail.com</p>
-  </div>
-</body><!-- ======= School Information Sections (Add Below Existing Content) ======= -->
+<div class="container">
+  <h1>Welcome to Tyneceploh Educational Foundation</h1>
+  <p>Empowering young minds from Nursery to 9th Grade. Located at Rehab Road, ELWA, Liberia.</p>
+  <p>Contact us at: 0778847625, 0777515669, 0886515669</p>
+  <p>Email: tyneceploheducational2018@gmail.com</p>
 
-<section id="vision" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #ffe6f0;">
-  <h2 style="color: brown;">Vision</h2>
-  <p>We aspire to be the school of choice, improving our community and society by opening doors and providing opportunities for every child, every day.</p>
-</section>
+  <h2>Quick Access</h2>
+  <button onclick="window.location.href='check-result.html'">Check Result</button>
+  <button onclick="window.location.href='teacher.html'">Teacher Portal</button>
+  <button onclick="window.location.href='principal.html'">Principal Dashboard</button>
+</div>
 
-<section id="mission" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #fff0f6;">
-  <h2 style="color: brown;">Mission</h2>
-  <p>Our mission is to provide an engaging, innovative and holistic experience that empowers all students to become responsible, productive citizens.</p>
-</section>
+<footer>
+  &copy; 2025 Tyneceploh Educational Foundation. All rights reserved.
+</footer>
 
-<section id="core-values" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #ffe6f0;">
-  <h2 style="color: brown;">Core Values</h2>
-  <ul>
-    <li><strong>PASSION:</strong> We cultivate an environment where work and learning are infused with desire and commitment. We recruit, develop and retain highly qualified employees who consistently exhibit a positive example, exemplary attitude, genuine caring and great enthusiasm.</li>
-    <li><strong>EXCELLENCE:</strong> Encouraging creativity and a pursuit of quality in every aspect of life.</li>
-    <li><strong>RESPECT:</strong> Regarding each person as an image bearer of Christ, in love, integrity, and openness.</li>
-    <li><strong>TRUTH:</strong> Learning, living and teaching in obedience to God's truth, discerning, engaging, and influencing culture with the hope of Christ's redemption.</li>
-  </ul>
-</section>
+<!-- Logo and Announcement Script -->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // Show logo if it exists in localStorage
+    const savedLogo = localStorage.getItem('schoolLogo');
+    if (savedLogo) {
+      const logoImg = document.querySelector('header img');
+      logoImg.src = savedLogo;
+    }
 
-<section id="slogan-pledge" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #fff0f6;">
-  <h2 style="color: brown;">Slogan</h2>
-  <p><em>HOPE FOR THE FUTURE / BY GOD'S GRACE.</em></p>
+    // Show announcement if it exists
+    const savedAnnouncement = localStorage.getItem('announcement');
+    if (savedAnnouncement && savedAnnouncement.trim() !== "") {
+      const announcementBar = document.getElementById('announcementBar');
+      announcementBar.querySelector('p') 
+        ? announcementBar.querySelector('p').innerText = savedAnnouncement 
+        : announcementBar.innerHTML = `<strong>${savedAnnouncement}</strong> <button onclick="this.parentElement.style.display='none'">Dismiss</button>`;
+    }
+  });
+</script>
 
-  <h2 style="color: brown; margin-top: 20px;">Pledge</h2>
-  <p>By God's grace:</p>
-  <ul>
-    <li>I will be respectful</li>
-    <li>I will be responsible</li>
-    <li>I will be peaceful</li>
-    <li>I will be an achiever</li>
-  </ul>
-</section>
-
-<section id="school-ode" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #ffe6f0;">
-  <h2 style="color: brown;">School Ode</h2>
-  <p>We meet here from all walks of life<br>
-     From different homes and families<br>
-     We hope to be as one<br>
-     Foundation that so strong<br>
-     To keep us safe from strife<br>
-     We cross the Rubicon<br>
-     By trusting God alone<br>
-  </p>
-  <p><strong>Chorus</strong><br>
-     Tyneceploh Educational Foundation<br>
-     Tyneceploh we love you<br>
-     Tyneceploh prepare our hearts for life here<br>
-     And life to come<br>
-     We are not the same<br>
-     On our way to face the world<br>
-     You've shown the way, you made us proud<br>
-     You've built us for good future<br>
-     (Chorus 2x)
-  </p>
-  <p><em>Written by: Vanii Kaizolu</em></p>
-</section>
-
-<section id="history" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #fff0f6;">
-  <h2 style="color: brown;">History</h2>
-  <p>Tyneceploh Educational Foundation is a lifelong dream that has been realized in the absence of the dreamer, the late Margret Ploh Chattah. The special passion for child development which Mrs. Margret Ploh Chattah believed was a gift from God started to be actualized with a groundbreaking program on January 25, 2015. The construction of the building began in April 2015 unfortunately she got sick and was taken to India in June for treatment but never returned. This dream championed by her widower Mr. Napoleon T. Chattah along with other well-wishers germinated on September 3, 2018. Today, TEF is proud in fulfilling this dream while contributing to our country Liberia as indicated in Article 6 of our Constitution: providing equal access to educational opportunities and facilities for all citizens to the extent of available resources.</p>
-</section>
-
-<section id="admission-policy" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #ffe6f0;">
-  <h2 style="color: brown;">Admission Policy</h2>
-  <ol>
-    <li>Successfully pass entrance exam and interview</li>
-    <li>Submit a filled in purchased admission form</li>
-    <li>Attach two (2) passport size photos to admission form</li>
-    <li>Provide recent medical certificate</li>
-    <li>Letters of Recommendation, one (1) from past school and one (1) from pastor or Community leader</li>
-    <li>Submit an official transcript from past school</li>
-    <li>Submit all requirements in one Manilla folder</li>
-  </ol>
-</section>
-
-<section id="registration-policy" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #fff0f6;">
-  <h2 style="color: brown;">Registration Policy</h2>
-  <p>The submission of all the requirements plus payment of fees according to payment plan completes the registration.</p>
-</section>
-
-<section id="academic-policy" style="margin: 20px 40px; padding: 20px; border: 2px solid pink; border-radius: 10px; background: #ffe6f0;">
-  <h2 style="color: brown;">Academic Policies</h2>
-  <p>While we endeavor to seek academic excellence, we subscribe to the Ministry of Education Minimum passing grade of 70%. However, we encourage students to strive for higher marks by regular recognition and reward of gifts or promotion.</p>
-  <p>Students who maintain 95% average from first period through the first semester will be promoted to the next class except where the student is in the highest class of the school.</p>
-  <p>Student failing in one subject in the average for the year will be promoted under condition and is compelled to attend the enrichment classes but will still have to be monitored during the first period in the new class.</p>
-  <p>Student failing in two (2) or more subjects repeats the class.</p>
-</section>
+</body>
 </html>
