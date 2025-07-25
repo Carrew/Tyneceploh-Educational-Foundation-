@@ -1,135 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Principal Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Principal Dashboard - Tyneceploh Educational Foundation</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #ffe6f0;
-      color: #3e2723;
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      background: #fff0f5;
+      color: #4b2e2e;
     }
-
-    h1 {
-      color: #880e4f;
+    h1, h2 {
+      color: #7b3f3f;
     }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background-color: #fff0f5;
-      border: 2px solid #d48a9c;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #e8b7c8;
+    label {
+      font-weight: bold;
     }
-
-    .section {
-      margin-top: 30px;
-    }
-
-    label, input, button {
-      display: block;
-      margin: 10px 0;
-    }
-
-    input, textarea {
+    input[type="file"], textarea {
+      margin-top: 8px;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #c85a7c;
       width: 100%;
-      padding: 8px;
-      border: 1px solid #d48a9c;
-      border-radius: 5px;
+      font-size: 16px;
+      resize: vertical;
     }
-
     button {
-      background-color: brown;
+      background-color: #7b3f3f;
       color: white;
       border: none;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 12px 20px;
+      border-radius: 30px;
       font-weight: bold;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
     }
-
     button:hover {
-      background-color: #a52a2a;
+      background-color: #a15656;
     }
-
-    .logout {
-      float: right;
-      background-color: #b71c1c;
-    }
-
-    /* Announcement display style */
-    .announcement-box {
-      background-color: #ffe0eb;
-      border-left: 6px solid #d81b60;
-      padding: 15px;
-      margin-top: 30px;
-      animation: slideIn 0.6s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateY(-20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .bold-text {
+    .success-msg {
+      color: green;
       font-weight: bold;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Principal Dashboard</h1>
-    <button class="logout" onclick="logout()">Logout</button>
 
-    <!-- Add more sections here as needed -->
+  <h1>Principal Dashboard</h1>
 
-    <div class="section">
-      <h2>Post New Announcement</h2>
-      <label for="announcementInput">Enter Announcement:</label>
-      <textarea id="announcementInput" rows="4"></textarea>
-      <button onclick="saveAnnouncement()">Save Announcement</button>
-    </div>
+  <!-- Logo Upload -->
+  <section>
+    <h2>Upload School Logo</h2>
+    <input type="file" id="logoUpload" accept="image/*" />
+    <p id="uploadStatus" class="success-msg" style="display:none;">Logo uploaded successfully!</p>
+  </section>
 
-    <div class="section announcement-box">
-      <h3 class="bold-text">📢 Current Announcement</h3>
-      <p id="announcementDisplay">No announcement yet.</p>
-    </div>
-  </div>
+  <!-- Announcement -->
+  <section>
+    <h2>Post Announcement</h2>
+    <label for="announcementText">Announcement Text:</label>
+    <textarea id="announcementText" rows="4" placeholder="Write announcement here..."></textarea>
+    <button onclick="postAnnouncement()">Post Announcement</button>
+    <p id="announceStatus" class="success-msg" style="display:none;">Announcement posted successfully!</p>
+  </section>
 
   <script>
-    function logout() {
-      sessionStorage.removeItem('loggedInPrincipal');
-      window.location.href = "index.html";
-    }
+    // Logo upload to localStorage
+    document.getElementById('logoUpload').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-    function saveAnnouncement() {
-      const announcement = document.getElementById('announcementInput').value.trim();
-      if (announcement !== "") {
-        localStorage.setItem('schoolAnnouncement', announcement);
-        document.getElementById('announcementDisplay').textContent = announcement;
-        alert("Announcement posted successfully!");
-        document.getElementById('announcementInput').value = "";
-      } else {
-        alert("Please enter a valid announcement.");
-      }
-    }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64String = e.target.result;
+        localStorage.setItem('schoolLogo', base64String);
+        document.getElementById('uploadStatus').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('uploadStatus').style.display = 'none';
+        }, 3000);
+      };
+      reader.readAsDataURL(file);
+    });
 
-    // Load existing announcement from localStorage
-    window.onload = function () {
-      const savedAnnouncement = localStorage.getItem('schoolAnnouncement');
-      if (savedAnnouncement) {
-        document.getElementById('announcementDisplay').textContent = savedAnnouncement;
+    // Post announcement to localStorage
+    function postAnnouncement() {
+      const textArea = document.getElementById('announcementText');
+      const text = textArea.value.trim();
+      if (!text) {
+        alert('Please enter announcement text.');
+        return;
       }
-    };
+      localStorage.setItem('schoolAnnouncement', text);
+      document.getElementById('announceStatus').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('announceStatus').style.display = 'none';
+      }, 3000);
+      textArea.value = '';
+    }
   </script>
 </body>
 </html>
