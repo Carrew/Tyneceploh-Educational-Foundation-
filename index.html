@@ -7,124 +7,119 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #fff;
-      margin: 0;
-      padding: 0;
+      padding: 10px;
+      background: #f9f9f9;
     }
-
     header {
-      background-color: #b76e79;
-      color: white;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      text-align: center;
+      margin-bottom: 20px;
     }
-
     header img {
-      height: 50px;
+      max-width: 120px;
+      display: block;
+      margin: 0 auto 10px;
     }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
+    h1 {
+      margin-bottom: 5px;
     }
-
-    .announcement {
-      background-color: pink;
-      padding: 10px;
-      color: #333;
-      text-align: center;
+    .mission-box {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-left: 5px solid #a52a2a;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
-
-    .container {
-      padding: 20px;
-    }
-
     footer {
-      background-color: #b76e79;
-      color: white;
-      padding: 10px;
       text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #555;
     }
-
-    button {
-      background-color: #b76e79;
+    .button-group {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .button-group button {
+      display: inline-block;
+      padding: 10px 15px;
+      margin: 8px;
+      background-color: brown;
       color: white;
       border: none;
-      padding: 10px;
-      margin: 5px;
-      cursor: pointer;
       border-radius: 5px;
+      cursor: pointer;
     }
-
-    button:hover {
-      background-color: #a55c66;
+    .button-group button:hover {
+      background-color: darkred;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <img src="logo.png" alt="School Logo" />
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="check-result.html">Check Result</a>
-    <a href="teacher.html">Teacher</a>
-    <a href="principal.html">Principal</a>
-    <a href="about.html">About</a>
-  </nav>
-</header>
+  <header>
+    <!-- ✅ School Logo -->
+    <img src="logo.png" alt="School Logo" />
+    <h1>Tyneceploh Educational Foundation</h1>
+    <h3>Nursery – 9th Grade | Rehab Road, ELWA, Liberia</h3>
+  </header>
 
-<div class="announcement" id="announcementBar">
-  <p>Welcome back students! 1st Semester Results will be released soon.</p>
-  <button onclick="this.parentElement.style.display='none'">Dismiss</button>
-</div>
+  <!-- ✅ School Info Sections -->
+  <div class="mission-box">
+    <h3>Mission Statement</h3>
+    <p>Our mission is to provide a safe and caring environment that promotes academic excellence and spiritual growth for all students.</p>
+  </div>
 
-<div class="container">
-  <h1>Welcome to Tyneceploh Educational Foundation</h1>
-  <p>Empowering young minds from Nursery to 9th Grade. Located at Rehab Road, ELWA, Liberia.</p>
-  <p>Contact us at: 0778847625, 0777515669, 0886515669</p>
-  <p>Email: tyneceploheducational2018@gmail.com</p>
+  <div class="mission-box">
+    <h3>Vision Statement</h3>
+    <p>We envision a future where our students become responsible citizens and confident leaders through quality education grounded in moral values.</p>
+  </div>
 
-  <h2>Quick Access</h2>
-  <button onclick="window.location.href='check-result.html'">Check Result</button>
-  <button onclick="window.location.href='teacher.html'">Teacher Portal</button>
-  <button onclick="window.location.href='principal.html'">Principal Dashboard</button>
-</div>
+  <div class="mission-box">
+    <h3>School History</h3>
+    <p>Tyneceploh Educational Foundation was established in 2018 with the vision of providing quality education to children in the Rehab community and beyond. We currently serve over 100 students with a committed staff of 10 teachers.</p>
+  </div>
 
-<footer>
-  &copy; 2025 Tyneceploh Educational Foundation. All rights reserved.
-</footer>
+  <!-- ✅ Announcement Display -->
+  <div class="mission-box">
+    <h3>📢 Announcement</h3>
+    <p id="announcementText">Loading announcement...</p>
+  </div>
 
-<!-- Logo and Announcement Script -->
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // Show logo if it exists in localStorage
-    const savedLogo = localStorage.getItem('schoolLogo');
-    if (savedLogo) {
-      const logoImg = document.querySelector('header img');
-      logoImg.src = savedLogo;
-    }
+  <script>
+    const announcement = localStorage.getItem("school_announcement");
+    document.getElementById("announcementText").innerText = announcement 
+      ? announcement 
+      : "No announcements yet.";
+  </script>
 
-    // Show announcement if it exists
-    const savedAnnouncement = localStorage.getItem('announcement');
-    if (savedAnnouncement && savedAnnouncement.trim() !== "") {
-      const announcementBar = document.getElementById('announcementBar');
-      announcementBar.querySelector('p') 
-        ? announcementBar.querySelector('p').innerText = savedAnnouncement 
-        : announcementBar.innerHTML = `<strong>${savedAnnouncement}</strong> <button onclick="this.parentElement.style.display='none'">Dismiss</button>`;
-    }
-  });
-</script>
+  <!-- ✅ Button Links -->
+  <div class="button-group">
+    <button onclick="location.href='result.html'">Check Result</button>
+    <button onclick="location.href='principal.html'">Principal Dashboard</button>
+    <button onclick="location.href='teacher.html'">Teacher Portal</button>
+    <button onclick="location.href='school-ode.html'">School Ode</button>
+  </div>
 
-</body><!-- START: School Ode Button -->
-<div style="text-align: center; margin-top: 20px;">
-  <button onclick="window.location.href='school-ode.html'"
-    style="padding: 10px 20px; background-color: brown; color: white; border: none; border-radius: 5px; font-size: 16px;">
-    School Ode
-  </button>
-</div>
-<!-- END: School Ode Button -->
+  <!-- ✅ Slogan and Pledge -->
+  <div class="mission-box">
+    <h3>Slogan</h3>
+    <p>HOPE FOR THE FUTURE / BY GOD'S GRACE</p>
+  </div>
+
+  <div class="mission-box">
+    <h3>Pledge</h3>
+    <p>
+      I will be respectful<br>
+      I will be responsible<br>
+      I will be peaceful<br>
+      I will be an achiever
+    </p>
+  </div>
+
+  <!-- ✅ Final Footer -->
+  <footer>
+    <p>Copyright ©️ Tyneceploh Educational Foundation</p>
+  </footer>
+
+</body>
 </html>
