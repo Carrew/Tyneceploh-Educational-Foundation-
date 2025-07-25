@@ -58,48 +58,42 @@
 </head>
 <body>
 
-  <!-- ======= Your existing Principal Dashboard content STARTS HERE ======= -->
-  
-  <!-- Example: Finance Section -->
+  <!-- ======= Finance Section ======= -->
   <section id="financeSection">
     <h1>Finance Management</h1>
     <!-- Your existing finance management code here -->
     <p><em>(Your finance management UI and functionality here.)</em></p>
   </section>
 
-  <!-- Example: Teacher Account Control -->
+  <!-- ======= Teacher Account Control ======= -->
   <section id="teacherControlSection">
     <h2>Teacher Account Control</h2>
     <!-- Your existing teacher activation/deactivation UI here -->
     <p><em>(Your teacher account management UI here.)</em></p>
   </section>
 
-  <!-- Example: Student ID Generation and List -->
+  <!-- ======= Student ID Generation and List ======= -->
   <section id="studentIdSection">
     <h2>Student ID Generation and Listing</h2>
     <!-- Your existing student ID generation and listing UI here -->
     <p><em>(Your student ID and listing management UI here.)</em></p>
   </section>
 
-  <!-- Example: Grade Approval -->
+  <!-- ======= Grade Approval ======= -->
   <section id="gradeApprovalSection">
     <h2>Grade Approval</h2>
     <!-- Your existing grade approval UI here -->
     <p><em>(Your grade approval and rejection UI here.)</em></p>
   </section>
 
-  <!-- ======= Your existing Principal Dashboard content ENDS HERE ======= -->
-
-  <!-- ======= ADDITIONAL SECTIONS YOU REQUESTED (Announcement Editor + Logo Upload) ======= -->
-
-  <!-- 📣 Announcement Editor -->
+  <!-- ======= Announcement Editor (Added) ======= -->
   <section id="announcementEditor" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff0f5;">
     <h2 style="margin-bottom: 10px;">📝 Post Homepage Announcement</h2>
     <textarea id="announcementText" rows="4" style="width: 100%; padding: 10px;" placeholder="Enter announcement to display on homepage..."></textarea>
     <button onclick="submitAnnouncement()" style="margin-top: 10px; padding: 10px 15px;">Submit Announcement</button>
   </section>
 
-  <!-- 🖼️ Logo Upload Section -->
+  <!-- ======= Logo Upload Section (Added) ======= -->
   <section id="logoUploader" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff0f5;">
     <h2 style="margin-bottom: 10px;">📷 Upload School Logo</h2>
     <input type="file" id="logoInput" accept="image/*" />
@@ -108,7 +102,6 @@
     <div id="logoPreview" style="margin-top: 15px;"></div>
   </section>
 
-  <!-- 📜 JavaScript Functions -->
   <script>
     function submitAnnouncement() {
       const announcement = document.getElementById("announcementText").value;
