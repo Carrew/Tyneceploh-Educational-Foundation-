@@ -1,118 +1,329 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Principal Dashboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
       padding: 20px;
+      background: #f5f5f5;
     }
-    h2 {
-      text-align: center;
+    h1, h2, h3 {
+      margin-top: 30px;
     }
-    section {
-      background: #fff;
+    .section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 30px;
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 5px #ccc;
     }
-    label, input, textarea, select, button {
-      display: block;
+    input, textarea, button, select {
+      padding: 8px;
+      margin: 5px 0;
       width: 100%;
-      margin-bottom: 10px;
-    }
-    button {
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
+      box-sizing: border-box;
     }
     table {
-      width: 100%;
       border-collapse: collapse;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 10px;
+    }
+    table, th, td {
+      border: 1px solid #aaa;
     }
     th, td {
-      border: 1px solid #ccc;
       padding: 8px;
       text-align: left;
     }
-    th {
-      background-color: #eee;
+    .print-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .action-btn {
+      padding: 6px 12px;
+      margin: 4px 6px 4px 0;
+      cursor: pointer;
+    }
+    .teacher-status {
+      font-weight: bold;
+      margin-right: 8px;
     }
   </style>
 </head>
 <body>
-  <h2>Principal Dashboard</h2>  <section>
-    <h3>Post Announcement</h3>
-    <textarea id="announcementText" placeholder="Write announcement..."></textarea>
-    <button onclick="saveAnnouncement()">Save Announcement</button>
-  </section>  <section>
-    <h3>Upload School Logo</h3>
-    <input type="file" accept="image/*" onchange="previewLogo(event)">
-    <img id="logoPreview" src="" alt="Logo Preview" style="max-height: 100px; margin-top: 10px;">
-  </section>  <section>
-    <h3>Finance - Student Receipt</h3>
-    <input type="text" placeholder="Student Name" id="studentName">
-    <input type="text" placeholder="Amount Paid" id="amountPaid">
-    <input type="text" placeholder="Date" id="paymentDate">
-    <textarea placeholder="Payment Details" id="paymentDetails"></textarea>
-    <button onclick="saveReceipt()">Save Receipt</button>
-  </section>  <section>
-    <h3>Generate Student ID</h3>
-    <input type="text" id="newStudentName" placeholder="Enter Student Name">
-    <button onclick="generateStudentID()">Generate ID</button>
-    <ul id="studentList"></ul>
-  </section>  <section>
-    <h3>Teacher Account Control</h3>
-    <div>
-      <input type="text" placeholder="Teacher Name">
-      <button>Activate</button>
-      <button>Deactivate</button>
-    </div>
-  </section>  <section>
-    <h3>Approve or Reject Grade</h3>
-    <select>
-      <option value="math">Math - John Doe</option>
-      <option value="eng">English - Jane Smith</option>
-    </select>
-    <textarea placeholder="Reason for rejection (if any)"></textarea>
-    <button>Approve</button>
-    <button>Reject</button>
-  </section>  <script>
-    function generateStudentID() {
-      const name = document.getElementById("newStudentName").value.trim();
-      if (name !== '') {
-        const list = document.getElementById("studentList");
-        const id = 'TEF2025' + (list.children.length + 1).toString().padStart(4, '0');
-        const entry = document.createElement("li");
-        entry.textContent = name + " - " + id;
-        list.appendChild(entry);
-        document.getElementById("newStudentName").value = '';
-      }
+
+<h1>Principal Dashboard</h1>
+
+<!-- Announcement and Logo Upload -->
+<div class="section">
+  <h2>📢 Announcement & Logo Upload</h2>
+  <textarea id="announcementInput" placeholder="Write announcement here..." rows="4"></textarea>
+  <button onclick="saveAnnouncement()">Save Announcement</button>
+  <br><br>
+  <input type="file" id="logoInput" accept="image/*" onchange="previewLogo()" />
+  <br>
+  <img id="logoPreview" src="" alt="Logo Preview" style="max-height:100px; display:none; margin-top:10px;" />
+</div>
+
+<!-- Financial Info (Receipts) -->
+<div class="section">
+  <h2>💳 Financial Info (Receipt)</h2>
+  <input type="text" id="studentName" placeholder="Student Name" />
+  <input type="text" id="amount" placeholder="Amount" />
+  <textarea id="paymentPurpose" placeholder="Purpose of payment..." rows="3"></textarea>
+  <button onclick="saveReceipt()">Save Receipt</button>
+  <div class="receipt-list" id="receiptList"></div>
+</div>
+
+<!-- Student ID Generator -->
+<div class="section">
+  <h2>🧑‍🎓 Student ID Generator</h2>
+  <input type="text" id="studentNameId" placeholder="Student Name" />
+  <button onclick="generateStudentId()">Generate ID</button>
+  <div class="id-list" id="idList"></div>
+</div>
+
+<!-- Teacher Account Control -->
+<div class="section">
+  <h2>🧑‍🏫 Teacher Account Control</h2>
+  <div class="teacher-list" id="teacherList"></div>
+</div>
+
+<!-- Grade Approval -->
+<div class="section">
+  <h2>📑 Grade Approval</h2>
+  <div id="gradeList"></div>
+</div>
+
+<script>
+  // Announcement Functions
+  function saveAnnouncement() {
+    const text = document.getElementById("announcementInput").value.trim();
+    localStorage.setItem("announcement", text);
+    alert("Announcement saved.");
+  }
+
+  // Logo Upload Preview
+  function previewLogo() {
+    const file = document.getElementById("logoInput").files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.getElementById("logoPreview").src = e.target.result;
+      document.getElementById("logoPreview").style.display = "block";
+      localStorage.setItem("schoolLogo", e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Receipt Functions
+  function saveReceipt() {
+    const name = document.getElementById("studentName").value.trim();
+    const amount = document.getElementById("amount").value.trim();
+    const purpose = document.getElementById("paymentPurpose").value.trim();
+
+    if (!name || !amount || !purpose) {
+      alert("Please fill all receipt fields.");
+      return;
     }
 
-    function saveAnnouncement() {
-      const text = document.getElementById("announcementText").value;
-      localStorage.setItem("schoolAnnouncement", text);
-      alert("Announcement saved!");
+    const receipt = {
+      name,
+      amount,
+      purpose,
+      time: new Date().toLocaleString()
+    };
+
+    let receipts = JSON.parse(localStorage.getItem("receipts") || "[]");
+    receipts.push(receipt);
+    localStorage.setItem("receipts", JSON.stringify(receipts));
+    displayReceipts();
+
+    document.getElementById("studentName").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("paymentPurpose").value = "";
+  }
+
+  function displayReceipts() {
+    const receipts = JSON.parse(localStorage.getItem("receipts") || "[]");
+    const list = document.getElementById("receiptList");
+    list.innerHTML = "";
+    receipts.forEach((r, index) => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p><strong>Student:</strong> ${r.name} <br>
+           <strong>Amount:</strong> $${r.amount} <br>
+           <strong>Purpose:</strong> ${r.purpose} <br>
+           <em>${r.time}</em></p>
+        <button class="print-btn" onclick="printReceipt(${index})">🖨️ Print Receipt</button>
+        <hr>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function printReceipt(index) {
+    const receipts = JSON.parse(localStorage.getItem("receipts") || "[]");
+    const r = receipts[index];
+    const w = window.open("", "Print Receipt");
+    w.document.write(`
+      <h2>Receipt</h2>
+      <p><strong>Student:</strong> ${r.name}</p>
+      <p><strong>Amount:</strong> $${r.amount}</p>
+      <p><strong>Purpose:</strong> ${r.purpose}</p>
+      <p><em>${r.time}</em></p>
+    `);
+    w.print();
+  }
+
+  // Student ID Generation
+  let currentId = parseInt(localStorage.getItem("lastId") || "0");
+  function generateStudentId() {
+    const name = document.getElementById("studentNameId").value.trim();
+    if (!name) {
+      alert("Please enter the student's name.");
+      return;
+    }
+    currentId++;
+    const studentId = `TEF2025${String(currentId).padStart(4, "0")}`;
+    let ids = JSON.parse(localStorage.getItem("studentIds") || "[]");
+    ids.push({ name, id: studentId });
+    localStorage.setItem("studentIds", JSON.stringify(ids));
+    localStorage.setItem("lastId", currentId);
+    displayStudentIds();
+    document.getElementById("studentNameId").value = "";
+  }
+
+  function displayStudentIds() {
+    const ids = JSON.parse(localStorage.getItem("studentIds") || "[]");
+    const list = document.getElementById("idList");
+    list.innerHTML = "";
+    ids.forEach(s => {
+      const div = document.createElement("div");
+      div.innerHTML = `<p><strong>${s.name}</strong>: ${s.id}</p>`;
+      list.appendChild(div);
+    });
+  }
+
+  // Teacher Account Control (dummy data)
+  const dummyTeachers = [
+    { name: "Mr. George", status: "active" },
+    { name: "Ms. Linda", status: "inactive" }
+  ];
+
+  function displayTeachers() {
+    const list = document.getElementById("teacherList");
+    list.innerHTML = "";
+    dummyTeachers.forEach((t, i) => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p><span class="teacher-status">${t.status.toUpperCase()}</span> <strong>${t.name}</strong> 
+        <button class="action-btn" onclick="toggleTeacher(${i})">${t.status === "active" ? "Deactivate" : "Activate"}</button></p>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function toggleTeacher(index) {
+    dummyTeachers[index].status = dummyTeachers[index].status === "active" ? "inactive" : "active";
+    displayTeachers();
+  }
+
+  // Grade Approval
+
+  // Example submitted grades data (replace with your backend data)
+  const submittedGrades = [
+    {
+      student: "John Doe",
+      grades: [
+        { subject: "Math", score: 80 },
+        { subject: "English", score: 75 },
+        { subject: "Science", score: 90 }
+      ]
+    },
+    {
+      student: "Jane Roe",
+      grades: [
+        { subject: "Math", score: 65 },
+        { subject: "English", score: 70 },
+        { subject: "Science", score: 88 }
+      ]
+    }
+  ];
+
+  function displayGrades() {
+    const container = document.getElementById("gradeList");
+    container.innerHTML = "";
+
+    submittedGrades.forEach((entry, idx) => {
+      const studentDiv = document.createElement("div");
+      studentDiv.style.marginBottom = "30px";
+
+      let tableHTML = "<table>"
+        + "<thead><tr><th>Subject</th><th>Score</th></tr></thead><tbody>";
+
+      entry.grades.forEach(g => {
+        tableHTML += `<tr><td>${g.subject}</td><td>${g.score}</td></tr>`;
+      });
+      tableHTML += "</tbody></table>";
+
+      studentDiv.innerHTML = `
+        <h3>${entry.student}</h3>
+        ${tableHTML}
+        <label for="reason${idx}">Reason for rejection (if any):</label><br>
+        <textarea id="reason${idx}" rows="3" style="width:100%;"></textarea><br><br>
+        <button class="action-btn" onclick="approveGrades(${idx})">Approve</button>
+        <button class="action-btn" onclick="rejectGrades(${idx})">Reject</button>
+        <hr>
+      `;
+
+      container.appendChild(studentDiv);
+    });
+  }
+
+  function approveGrades(idx) {
+    alert(`Grades for ${submittedGrades[idx].student} approved.`);
+    // TODO: Backend integration for approval
+  }
+
+  function rejectGrades(idx) {
+    const reason = document.getElementById(`reason${idx}`).value.trim();
+    if (!reason) {
+      alert("Please provide a reason for rejection.");
+      return;
+    }
+    alert(`Grades for ${submittedGrades[idx].student} rejected. Reason: ${reason}`);
+    // TODO: Backend integration for rejection
+  }
+
+  // On load display all
+  window.onload = () => {
+    displayStudentIds();
+    displayReceipts();
+    displayTeachers();
+    displayGrades();
+
+    // Load logo and announcement if saved
+    const logo = localStorage.getItem("schoolLogo");
+    if (logo) {
+      const img = document.getElementById("logoPreview");
+      img.src = logo;
+      img.style.display = "block";
     }
 
-    function previewLogo(event) {
-      const output = document.getElementById("logoPreview");
-      output.src = URL.createObjectURL(event.target.files[0]);
+    const announcement = localStorage.getItem("announcement");
+    if (announcement) {
+      document.getElementById("announcementInput").value = announcement;
     }
+  };
+</script>
 
-    function saveReceipt() {
-      const name = document.getElementById("studentName").value;
-      const amount = document.getElementById("amountPaid").value;
-      const date = document.getElementById("paymentDate").value;
-      const details = document.getElementById("paymentDetails").value;
-      alert("Receipt saved for " + name);
-    }
-  </script></body>
+</body>
 </html>
