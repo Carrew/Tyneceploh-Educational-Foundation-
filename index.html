@@ -41,13 +41,13 @@
     /* Header */
     header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    /* Buttons */
+    /* Button group */
     .btn-group {
       text-align: center;
-      margin: 20px 0;
+      margin: 20px 0 40px 0;
     }
     .btn {
       background-color: #7b3f3f;
@@ -60,7 +60,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
       display: inline-block;
-      min-width: 160px;
+      min-width: 140px;
     }
     .btn:hover {
       background-color: #a15656;
@@ -164,6 +164,15 @@
         width: 100%;
       }
     }
+
+    /* Contact info at bottom */
+    .contact-info {
+      text-align: center;
+      margin: 40px 0 20px 0;
+      font-weight: 600;
+      color: #7b3f3f;
+      font-size: 15px;
+    }
   </style>
 </head>
 <body>
@@ -171,10 +180,15 @@
   <div class="container">
     <header>
       <h1>Tyneceploh Educational Foundation</h1>
-      <p><strong>Nursery - 9th Grade | Rehab Road, ELWA | After George Weah junction coming from Conex Filling Station</strong></p>
-      <p>Contact: 0778847625 / 0777545669 / 0886515669 | Email: tyneceploheducational2018@gmail.com</p>
-      <h3 style="font-style: italic; color: #c85a7c;">"Hope for the Future / By God's Grace"</h3>
+      <h3 style="font-style: italic; color: #c85a7c; margin-top: 5px;">"Hope for the Future / By God's Grace"</h3>
     </header>
+
+    <!-- Buttons group: Results + Login -->
+    <section class="btn-group">
+      <button class="btn" onclick="window.location.href='results.html'">Check Results</button>
+      <button class="btn" onclick="window.location.href='teacher-login.html'">Teacher Login</button>
+      <button class="btn" onclick="window.location.href='principal-login.html'">Principal Login</button>
+    </section>
 
     <!-- Announcement -->
     <section id="announcementContainer" class="announcement-section" style="display:none;">
@@ -254,9 +268,8 @@ Written by: Vanii Kaizolu
       </div>
     </section>
 
-    <!-- Buttons -->
+    <!-- Buttons for policies -->
     <section class="btn-group">
-      <button class="btn" onclick="window.location.href='results.html'">Check Results</button>
       <button class="btn" onclick="togglePolicy('admissionPolicy')">Admission Policy</button>
       <button class="btn" onclick="togglePolicy('registrationPolicy')">Registration Policy</button>
       <button class="btn" onclick="togglePolicy('academicPolicies')">Academic Policies</button>
@@ -285,6 +298,11 @@ Written by: Vanii Kaizolu
       Students failing in two (2) or more subjects repeat the class.
     </section>
 
+    <!-- Contact info moved here -->
+    <section class="contact-info">
+      Contact: 0778847625 / 0777545669 / 0886515669 | Email: tyneceploheducational2018@gmail.com <br />
+      Location: Rehab Road, ELWA | After George Weah junction coming from Conex Filling Station
+    </section>
   </div>
 
   <footer style="text-align:center; margin: 30px 0 10px 0; color:#7b3f3f;">
@@ -327,4 +345,4 @@ Written by: Vanii Kaizolu
     }
   </script>
 </body>
-</html>
+  </html>
