@@ -8,37 +8,49 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
-      background-color: #fff;
-      color: #333;
+      background-color: #fff0f5;
+      color: #4b2e2e;
     }
     h1, h2 {
-      color: brown;
+      color: #8b4513;
     }
-    section {
-      margin-bottom: 30px;
-      padding: 15px;
-      border: 2px solid #c68642;
-      border-radius: 10px;
-      background: #ffe4c4;
+    nav {
+      margin-bottom: 20px;
     }
-    button {
-      background-color: brown;
+    nav button {
+      background-color: #c68642;
       color: white;
       border: none;
       padding: 10px 15px;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
+      margin-right: 10px;
+      font-weight: bold;
     }
-    button:hover {
-      background-color: #8b4513;
+    nav button:hover {
+      background-color: #a05d1a;
     }
-    input, select, textarea {
-      padding: 8px;
+    section {
+      display: none;
+      padding: 15px;
+      border: 2px solid #c68642;
+      border-radius: 10px;
+      background: #fff5ee;
+      margin-bottom: 30px;
+    }
+    section.active {
+      display: block;
+    }
+    textarea, input, select {
       width: 100%;
-      margin: 8px 0;
+      padding: 8px;
+      margin-top: 6px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid #c68642;
+      font-size: 1rem;
+      font-family: inherit;
       box-sizing: border-box;
-      border-radius: 5px;
-      border: 1px solid #ccc;
     }
     table {
       width: 100%;
@@ -46,89 +58,273 @@
       margin-top: 15px;
     }
     th, td {
-      padding: 10px;
       border: 1px solid #c68642;
+      padding: 8px;
       text-align: left;
     }
     th {
-      background-color: brown;
+      background-color: #8b4513;
       color: white;
+    }
+    button.save-btn {
+      background-color: #8b4513;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    button.save-btn:hover {
+      background-color: #6a3310;
+    }
+    .approve-btn {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    .reject-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .reject-reason {
+      width: 90%;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+    #logoPreview img {
+      max-width: 150px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 2px solid #c68642;
     }
   </style>
 </head>
 <body>
 
-  <!-- ======= Finance Section ======= -->
-  <section id="financeSection">
-    <h1>Finance Management</h1>
-    <!-- Your existing finance management code here -->
-    <p><em>(Your finance management UI and functionality here.)</em></p>
+  <h1>Principal Dashboard</h1>
+  <nav>
+    <button onclick="showSection('finance')">Finance Info</button>
+    <button onclick="showSection('teacherControl')">Teacher Account Control</button>
+    <button onclick="showSection('studentIDs')">Student IDs & Listing</button>
+    <button onclick="showSection('gradeApproval')">Grade Approval</button>
+    <button onclick="showSection('announcementEditor')">Announcement Editor</button>
+    <button onclick="showSection('logoUploader')">Logo Upload</button>
+  </nav>
+
+  <!-- Finance Info -->
+  <section id="finance" class="active">
+    <h2>Finance Management</h2>
+    <textarea id="financeInput" rows="8" placeholder="Enter financial info here..."></textarea>
+    <button class="save-btn" onclick="saveFinance()">Save Finance Info</button>
   </section>
 
-  <!-- ======= Teacher Account Control ======= -->
-  <section id="teacherControlSection">
+  <!-- Teacher Account Control -->
+  <section id="teacherControl">
     <h2>Teacher Account Control</h2>
-    <!-- Your existing teacher activation/deactivation UI here -->
-    <p><em>(Your teacher account management UI here.)</em></p>
+    <textarea id="teacherControlInput" rows="8" placeholder="Enter teacher accounts, mark activate/deactivate here..."></textarea>
+    <button class="save-btn" onclick="saveTeacherControl()">Save Teacher Account Control</button>
   </section>
 
-  <!-- ======= Student ID Generation and List ======= -->
-  <section id="studentIdSection">
+  <!-- Student IDs & Listing -->
+  <section id="studentIDs">
     <h2>Student ID Generation and Listing</h2>
-    <!-- Your existing student ID generation and listing UI here -->
-    <p><em>(Your student ID and listing management UI here.)</em></p>
+    <textarea id="studentIDsInput" rows="8" placeholder="Generate and list students IDs here..."></textarea>
+    <button class="save-btn" onclick="saveStudentIDs()">Save Student IDs & Listing</button>
   </section>
 
-  <!-- ======= Grade Approval ======= -->
-  <section id="gradeApprovalSection">
+  <!-- Grade Approval -->
+  <section id="gradeApproval">
     <h2>Grade Approval</h2>
-    <!-- Your existing grade approval UI here -->
-    <p><em>(Your grade approval and rejection UI here.)</em></p>
+    <div id="gradeApprovalContainer">
+      <p>Loading grades from localStorage...</p>
+    </div>
   </section>
 
-  <!-- ======= Announcement Editor (Added) ======= -->
-  <section id="announcementEditor" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff0f5;">
-    <h2 style="margin-bottom: 10px;">📝 Post Homepage Announcement</h2>
-    <textarea id="announcementText" rows="4" style="width: 100%; padding: 10px;" placeholder="Enter announcement to display on homepage..."></textarea>
-    <button onclick="submitAnnouncement()" style="margin-top: 10px; padding: 10px 15px;">Submit Announcement</button>
+  <!-- Announcement Editor -->
+  <section id="announcementEditor">
+    <h2>📝 Post Homepage Announcement</h2>
+    <textarea id="announcementText" rows="4" placeholder="Enter announcement to display on homepage..."></textarea>
+    <button class="save-btn" onclick="submitAnnouncement()">Submit Announcement</button>
   </section>
 
-  <!-- ======= Logo Upload Section (Added) ======= -->
-  <section id="logoUploader" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff0f5;">
-    <h2 style="margin-bottom: 10px;">📷 Upload School Logo</h2>
+  <!-- Logo Upload -->
+  <section id="logoUploader">
+    <h2>📷 Upload School Logo</h2>
     <input type="file" id="logoInput" accept="image/*" />
-    <br /><br />
-    <button onclick="uploadLogo()" style="padding: 10px 15px;">Upload Logo</button>
-    <div id="logoPreview" style="margin-top: 15px;"></div>
+    <button class="save-btn" onclick="uploadLogo()">Upload Logo</button>
+    <div id="logoPreview"></div>
   </section>
 
-  <script>
-    function submitAnnouncement() {
-      const announcement = document.getElementById("announcementText").value;
-      if (announcement.trim()) {
-        localStorage.setItem("homepageAnnouncement", announcement);
-        alert("Announcement saved!");
-      } else {
-        alert("Please write something.");
-      }
+<script>
+  // Show section function
+  function showSection(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // ----- Finance -----
+  function saveFinance() {
+    const data = document.getElementById('financeInput').value;
+    localStorage.setItem('financeData', data);
+    alert('Finance info saved!');
+  }
+  function loadFinance() {
+    const saved = localStorage.getItem('financeData');
+    if (saved) document.getElementById('financeInput').value = saved;
+  }
+
+  // ----- Teacher Control -----
+  function saveTeacherControl() {
+    const data = document.getElementById('teacherControlInput').value;
+    localStorage.setItem('teacherControlData', data);
+    alert('Teacher account control info saved!');
+  }
+  function loadTeacherControl() {
+    const saved = localStorage.getItem('teacherControlData');
+    if (saved) document.getElementById('teacherControlInput').value = saved;
+  }
+
+  // ----- Student IDs -----
+  function saveStudentIDs() {
+    const data = document.getElementById('studentIDsInput').value;
+    localStorage.setItem('studentIDsData', data);
+    alert('Student IDs and listing saved!');
+  }
+  function loadStudentIDs() {
+    const saved = localStorage.getItem('studentIDsData');
+    if (saved) document.getElementById('studentIDsInput').value = saved;
+  }
+
+  // ----- Announcement -----
+  function submitAnnouncement() {
+    const announcement = document.getElementById('announcementText').value;
+    if (announcement.trim()) {
+      localStorage.setItem('homepageAnnouncement', announcement);
+      alert('Announcement saved!');
+    } else {
+      alert('Please write something.');
+    }
+  }
+  function loadAnnouncement() {
+    const saved = localStorage.getItem('homepageAnnouncement');
+    if (saved) document.getElementById('announcementText').value = saved;
+  }
+
+  // ----- Logo Upload -----
+  function uploadLogo() {
+    const input = document.getElementById('logoInput');
+    const preview = document.getElementById('logoPreview');
+    if (input.files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        localStorage.setItem('schoolLogo', e.target.result);
+        preview.innerHTML = `<img src="${e.target.result}" alt="School Logo">`;
+        alert('Logo uploaded!');
+      };
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      alert('Please choose a logo image.');
+    }
+  }
+  function loadLogo() {
+    const preview = document.getElementById('logoPreview');
+    const savedLogo = localStorage.getItem('schoolLogo');
+    if (savedLogo) {
+      preview.innerHTML = `<img src="${savedLogo}" alt="School Logo">`;
+    }
+  }
+
+  // ----- Grade Approval -----
+  // We'll simulate grades list stored in localStorage as JSON array with objects:
+  // {id, studentName, subject, grade, status: 'pending'|'approved'|'rejected', rejectReason}
+  // This example shows how to load, approve, reject grades in a table
+  function loadGrades() {
+    let grades = JSON.parse(localStorage.getItem('gradesData') || '[]');
+    const container = document.getElementById('gradeApprovalContainer');
+    if (grades.length === 0) {
+      container.innerHTML = '<p>No grades submitted yet.</p>';
+      return;
     }
 
-    function uploadLogo() {
-      const input = document.getElementById("logoInput");
-      const preview = document.getElementById("logoPreview");
-      if (input.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          localStorage.setItem("schoolLogo", e.target.result);
-          preview.innerHTML = `<img src="${e.target.result}" style="max-width: 150px; margin-top:10px;">`;
-          alert("Logo uploaded!");
-        };
-        reader.readAsDataURL(input.files[0]);
+    let html = `<table><thead><tr>
+      <th>Student Name</th><th>Subject</th><th>Grade</th><th>Status</th><th>Reject Reason</th><th>Actions</th>
+    </tr></thead><tbody>`;
+
+    grades.forEach((g, idx) => {
+      html += `<tr>
+        <td>${g.studentName}</td>
+        <td>${g.subject}</td>
+        <td>${g.grade}</td>
+        <td>${g.status}</td>
+        <td>${g.rejectReason ? g.rejectReason : ''}</td>
+        <td>`;
+      if (g.status === 'pending') {
+        html += `
+          <button class="approve-btn" onclick="approveGrade(${idx})">Approve</button>
+          <button class="reject-btn" onclick="showRejectInput(${idx})">Reject</button>
+          <br/>
+          <textarea id="rejectReason${idx}" class="reject-reason" style="display:none;" placeholder="Enter rejection reason"></textarea>
+          <button id="submitReject${idx}" class="save-btn" style="display:none;" onclick="submitReject(${idx})">Submit Reject</button>
+        `;
       } else {
-        alert("Please choose a logo image.");
+        html += `-`;
       }
+      html += `</td></tr>`;
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  function approveGrade(idx) {
+    let grades = JSON.parse(localStorage.getItem('gradesData') || '[]');
+    grades[idx].status = 'approved';
+    grades[idx].rejectReason = '';
+    localStorage.setItem('gradesData', JSON.stringify(grades));
+    alert('Grade approved!');
+    loadGrades();
+  }
+
+  function showRejectInput(idx) {
+    document.getElementById(`rejectReason${idx}`).style.display = 'block';
+    document.getElementById(`submitReject${idx}`).style.display = 'inline-block';
+  }
+
+  function submitReject(idx) {
+    let grades = JSON.parse(localStorage.getItem('gradesData') || '[]');
+    let reason = document.getElementById(`rejectReason${idx}`).value.trim();
+    if (!reason) {
+      alert('Please enter a rejection reason.');
+      return;
     }
-  </script>
+    grades[idx].status = 'rejected';
+    grades[idx].rejectReason = reason;
+    localStorage.setItem('gradesData', JSON.stringify(grades));
+    alert('Grade rejected with reason.');
+    loadGrades();
+  }
+
+  // Load all saved data on page load
+  window.onload = function() {
+    loadFinance();
+    loadTeacherControl();
+    loadStudentIDs();
+    loadAnnouncement();
+    loadLogo();
+    loadGrades();
+    showSection('finance'); // default visible section
+  };
+</script>
 
 </body>
 </html>
