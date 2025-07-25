@@ -58,9 +58,9 @@
 
   <header>
     <!-- ✅ School Logo -->
-    <img src="logo.png" alt="School Logo" />
+    <img id="schoolLogo" alt="School Logo" />
     <h1>Tyneceploh Educational Foundation</h1>
-    <h3>Nursery – 9th Grade | Rehab Road, ELWA, Liberia</h3>
+    <h3>Nursery – 9th Grade | Rehab Road, ELWA, after George Weah Junction coming from connex Liberia</h3>
   </header>
 
   <!-- ✅ School Info Sections -->
@@ -86,10 +86,20 @@
   </div>
 
   <script>
-    const announcement = localStorage.getItem("school_announcement");
-    document.getElementById("announcementText").innerText = announcement 
-      ? announcement 
-      : "No announcements yet.";
+  // Display Announcement
+  const announcement = localStorage.getItem("school_announcement");
+  document.getElementById("announcementText").innerText = announcement 
+    ? announcement 
+    : "No announcements yet.";
+
+  // Display Logo
+  const logoData = localStorage.getItem("school_logo");
+  if (logoData) {
+    document.getElementById("schoolLogo").src = logoData;
+  } else {
+    document.getElementById("schoolLogo").src = "logo.png";
+  }
+  </script>
   </script>
 
   <!-- ✅ Button Links -->
