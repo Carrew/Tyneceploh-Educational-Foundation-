@@ -44,6 +44,12 @@
       margin-bottom: 20px;
     }
 
+    /* Logo container */
+    #logoContainer {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
     /* Button group */
     .btn-group {
       text-align: center;
@@ -178,6 +184,9 @@
 <body>
 
   <div class="container">
+    <!-- LOGO HERE -->
+    <div id="logoContainer"></div>
+
     <header>
       <h1>Tyneceploh Educational Foundation</h1>
       <h3 style="font-style: italic; color: #c85a7c; margin-top: 5px;">"Hope for the Future / By God's Grace"</h3>
@@ -317,12 +326,25 @@ Written by: Vanii Kaizolu
     }
 
     window.onload = function () {
+      // Display announcement if available and not dismissed
       const announcement = localStorage.getItem("schoolAnnouncement");
       const dismissed = localStorage.getItem("announcementDismissed");
 
       if (announcement && dismissed !== "true") {
         document.getElementById("publicAnnouncementText").textContent = announcement;
         document.getElementById("announcementContainer").style.display = "block";
+      }
+
+      // Display school logo if available
+      const logoData = localStorage.getItem("schoolLogo");
+      if (logoData) {
+        const logoContainer = document.getElementById("logoContainer");
+        const img = document.createElement("img");
+        img.src = logoData;
+        img.alt = "School Logo";
+        img.style.maxWidth = "150px";
+        img.style.height = "auto";
+        logoContainer.appendChild(img);
       }
     };
 
@@ -345,4 +367,4 @@ Written by: Vanii Kaizolu
     }
   </script>
 </body>
-  </html>
+</html>
