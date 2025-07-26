@@ -1,98 +1,164 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html><html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher Portal</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    .container { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; background: #fff; border-radius: 8px; }
-    .blue { color: blue; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
     .red { color: red; }
-    input, select, button { margin: 5px; padding: 5px; }
-    .gradeForm { margin-top: 10px; }
+    .blue { color: blue; }
+    button {
+      padding: 8px 16px;
+      margin: 5px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+    input[type="text"], input[type="number"] {
+      padding: 5px;
+      width: 90%;
+    }
   </style>
 </head>
 <body>
-  <h2>Welcome, Teacher</h2>
-  <div id="teacherClass">Class: <strong id="classLabel"></strong></div>
-  <button onclick="addStudent()">Add Student</button>
+  <h2>Teacher Portal</h2>
+  <div id="class-info">Class: <span id="teacher-class">Grade 6</span></div>
   <button onclick="addSubject()">Add Subject</button>
-  <div id="studentList"></div>  <script>
-    const teacherClass = localStorage.getItem("teacherClass") || "Grade 6";
-    document.getElementById("classLabel").innerText = teacherClass;
-
-    function addStudent() {
-      const container = document.createElement("div");
-      container.className = "container";
-      container.innerHTML = `
-        <label>Student Name: <input class="studentName" /></label><br>
-        <div class="grades"></div>
-        <form class="gradeForm"></form>
-        <button onclick="submitGrades(this)" type="button">Submit Grades</button>
-      `;
-      document.getElementById("studentList").appendChild(container);
-    }
+  <button onclick="addStudent()">Add Student</button>
+  <div id="grade-sheet"></div>  <script>
+    const teacherClass = "Grade 6"; // fetched from login, locked
+    const gradeSheet = document.getElementById("grade-sheet");
+    let students = [];
 
     function addSubject() {
-      const containers = document.querySelectorAll(".container");
-      containers.forEach(container => {
-        const form = container.querySelector(".gradeForm");
-        const row = document.createElement("div");
-        row.innerHTML = `
-          <input placeholder="Subject" />
-          <input type="number" placeholder="Score" />
-        `;
-        form.appendChild(row);
+      students.forEach((student, index) => {
+        const row = student.row;
+        const colCount = row.cells.length;
+        const subject = prompt("Enter subject name:");
+        if (!subject) return;
+
+        const newCell = row.insertCell(colCount - 2);
+        const input = document.createElement("input");
+        input.type = "number";
+        input.placeholder = subject;
+        input.oninput = () => updateAverage(index);
+        newCell.appendChild(input);
+
+        // Update header
+        const header = document.getElementById("header-row");
+        const th = document.createElement("th");
+        th.innerText = subject;
+        header.insertBefore(th, header.cells[header.cells.length - 2]);
       });
     }
 
-    function submitGrades(button) {
-      const container = button.parentElement;
-      const form = container.querySelector(".gradeForm");
-      const gradesDiv = container.querySelector(".grades");
-      const rows = form.querySelectorAll("div");
-      let total = 0;
-      let count = 0;
-      const grades = [];
+    function addStudent() {
+      const table = document.getElementById("student-table") || createTable();
+      const name = prompt("Enter student name:");
+      if (!name) return;
 
-      rows.forEach(row => {
-        const inputs = row.querySelectorAll("input");
-        const subject = inputs[0].value.trim();
-        const score = parseInt(inputs[1].value);
-        if (subject && !isNaN(score)) {
-          grades.push({ subject, score });
-          total += score;
+      const row = table.insertRow();
+      const studentData = { name, row };
+      students.push(studentData);
+
+      row.insertCell().innerText = students.length;
+      row.insertCell().innerText = name;
+
+      // Add empty cells for existing subjects
+      const header = document.getElementById("header-row");
+      for (let i = 2; i < header.cells.length - 2; i++) {
+        const input = document.createElement("input");
+        input.type = "number";
+        input.oninput = () => updateAverage(students.length - 1);
+        const cell = row.insertCell();
+        cell.appendChild(input);
+      }
+
+      const avgCell = row.insertCell();
+      avgCell.className = "average-cell";
+      avgCell.innerText = "-";
+
+      const submitCell = row.insertCell();
+      const submitBtn = document.createElement("button");
+      submitBtn.innerText = "Submit";
+      submitBtn.onclick = () => handleSubmit(studentData);
+      submitCell.appendChild(submitBtn);
+    }
+
+    function createTable() {
+      const table = document.createElement("table");
+      table.id = "student-table";
+
+      const header = table.insertRow();
+      header.id = "header-row";
+      ["Sr No", "Name"].forEach(text => {
+        const th = document.createElement("th");
+        th.innerText = text;
+        header.appendChild(th);
+      });
+      const thAvg = document.createElement("th");
+      thAvg.innerText = "Average";
+      const thSubmit = document.createElement("th");
+      thSubmit.innerText = "Submit";
+      header.appendChild(thAvg);
+      header.appendChild(thSubmit);
+
+      gradeSheet.appendChild(table);
+      return table;
+    }
+
+    function updateAverage(index) {
+      const { row } = students[index];
+      let total = 0, count = 0;
+      for (let i = 2; i < row.cells.length - 2; i++) {
+        const val = parseFloat(row.cells[i].firstChild.value);
+        if (!isNaN(val)) {
+          total += val;
           count++;
-          inputs[0].disabled = true;
-          inputs[1].disabled = true;
-          inputs[1].className = score >= 70 ? "blue" : "red";
         }
-      });
-
-      const avg = count ? (total / count).toFixed(2) : "0.00";
-
-      const studentName = container.querySelector(".studentName").value.trim().toLowerCase();
-      const key = `grades_${teacherClass}_${studentName}`;
-
-      const gradeData = {
-        studentName,
-        class: teacherClass,
-        grades,
-        average: avg,
-        approved: false
-      };
-
-      localStorage.setItem(key, JSON.stringify(gradeData));
-
-      const existingAvg = gradesDiv.querySelector(".averageDisplay");
-      if (existingAvg) existingAvg.remove();
-
-      const averageDisplay = document.createElement("div");
-      averageDisplay.className = "averageDisplay";
-      averageDisplay.style.marginTop = "10px";
-      averageDisplay.innerHTML = `<strong>Average:</strong> ${avg}`;
-      gradesDiv.appendChild(averageDisplay);
-
-      button.disabled = true;
+      }
+      const avg = count ? (total / count).toFixed(2) : "-";
+      const avgCell = row.cells[row.cells.length - 2];
+      avgCell.innerText = avg;
+      avgCell.className = parseFloat(avg) < 70 ? "red" : "blue";
     }
-  <script src="check_teacher_login.js"></script>
-</body>
+
+    function handleSubmit(studentData) {
+      const { row } = studentData;
+      for (let i = 2; i < row.cells.length; i++) {
+        const cell = row.cells[i];
+        const input = cell.firstChild;
+        if (input && input.tagName === "INPUT") {
+          input.disabled = true;
+        }
+      }
+      row.cells[row.cells.length - 1].firstChild.disabled = true;
+      alert("Submitted and sent to Principal for approval.");
+      // Here you can send data to backend (e.g., save in localStorage or API call)
+    }
+  </script></body>
 </html>
