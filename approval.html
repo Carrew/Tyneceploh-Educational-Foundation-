@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grade Approval - Principal Dashboard</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f9f9f9;
+  }
+  h2 {
+    text-align: center;
+  }
+  .grade-entry {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+  }
+  .grades-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  .grades-table th, .grades-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  .grades-table th {
+    background: #f2f2f2;
+  }
+  button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  .reject-reason {
+    margin-top: 8px;
+    width: 100%;
+    padding: 5px;
+  }
+  .status {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .approved {
+    color: green;
+  }
+  .rejected {
+    color: red;
+  }
+</style>
+</head>
+<body>
+
+<h2>Grade Approval Dashboard</h2>
+<div id="gradesContainer">
+  Loading submitted grades...
+</div>
+
+<script>
+  const teacherClass = "Grade 6"; // You can make this dynamic from login if needed
+
+  function loadPendingGrades() {
+    const container = document.getElementById('gradesContainer');
+    container.innerHTML = '';
+
+    // Collect all keys starting with grades_ and matching class
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('grades_'));
+
+    if (keys.length === 0) {
+      container.innerHTML = "<p>No submitted grades found.</p>";
+      return;
+    }
+
+    let foundAny = false;
+
+    keys.forEach(key => {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (data.class !== teacherClass) return; // Only show grades for this class
+      
+      // Show only unapproved or rejected grades
+      if (data.approved === true) return;
+
+      foundAny = true;
+
+      // Create grade entry
+      const entryDiv = document.createElement('div');
+      entryDiv.className = 'grade-entry';
+
+      entryDiv.innerHTML = `
+        <div><strong>Student:</strong> ${capitalizeName(data.studentName)}</div>
+        <div><strong>Class:</strong> ${data.class}</div>
+        <table class="grades-table">
+          <thead>
+            <tr><th>Subject</th><th>Score</th></tr>
+          </thead>
+          <tbody>
+            ${data.grades.map(g => `<tr><td>${g.subject}</td><td>${g.score}</td></tr>`).join('')}
+            <tr><td><strong>Average</strong></td><td><strong>${data.average}</strong></td></tr>
+          </tbody>
+        </table>
+        <textarea placeholder="Reject reason (optional)" class="reject-reason"></textarea>
+        <div>
+          <button onclick="approveGrade('${key}', this)">Approve</button>
+          <button onclick="rejectGrade('${key}', this)">Reject</button>
+        </div>
+        <div class="status" id="status-${key}"></div>
+      `;
+
+      container.appendChild(entryDiv);
+    });
+
+    if (!foundAny) {
+      container.innerHTML = "<p>No pending grades for approval.</p>";
+    }
+  }
+
+  function capitalizeName(name) {
+    return name.split(' ').map(word =>
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  }
+
+  function approveGrade(key, btn) {
+    const data = JSON.parse(localStorage.getItem(key));
+    data.approved = true;
+    data.rejectReason = "";
+
+    localStorage.setItem(key, JSON.stringify(data));
+
+    const statusDiv = document.getElementById('status-' + key);
+    statusDiv.textContent = "Approved ✅";
+    statusDiv.className = "status approved";
+
+    btn.disabled = true;
+    btn.nextElementSibling.disabled = true;
+  }
+
+  function rejectGrade(key, btn) {
+    const data = JSON.parse(localStorage.getItem(key));
+    const entryDiv = btn.closest('.grade-entry');
+    const reasonField = entryDiv.querySelector('.reject-reason');
+    const reason = reasonField.value.trim();
+
+    data.approved = false;
+    data.rejectReason = reason || "No reason provided";
+
+    localStorage.setItem(key, JSON.stringify(data));
+
+    const statusDiv = document.getElementById('status-' + key);
+    statusDiv.textContent = "Rejected ❌ - Reason: " + data.rejectReason;
+    statusDiv.className = "status rejected";
+
+    btn.disabled = true;
+    btn.previousElementSibling.disabled = true;
+    reasonField.disabled = true;
+  }
+
+  window.onload = loadPendingGrades;
+</script>
+
+</body>
+</html>
