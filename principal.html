@@ -1,169 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Principal Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Principal Dashboard - Tyneceploh Educational Foundation</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f8f8f8;
-      padding: 20px;
+      background: #fef9f5;
+      color: #4b2e2e;
+      padding: 30px 20px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    h2 {
-      color: brown;
+    header {
       text-align: center;
+      margin-bottom: 40px;
     }
-    .student-card {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-left: 5px solid brown;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 5px #ccc;
+    header img {
+      max-width: 100px;
+      margin-bottom: 10px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
+    header h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin: 0;
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
+    .welcome {
+      font-size: 1.3rem;
+      margin-bottom: 40px;
     }
-    .status {
-      font-weight: bold;
-      margin-top: 10px;
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      width: 280px;
     }
-    .approved {
-      color: green;
-    }
-    .rejected {
-      color: red;
-    }
-    button {
-      margin: 5px;
-      padding: 6px 12px;
+    .button-group button {
+      background-color: #a52a2a;
+      color: #fff;
       border: none;
-      border-radius: 5px;
-      color: white;
+      padding: 14px 0;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      font-size: 1.1rem;
       cursor: pointer;
+      box-shadow: 0 4px 6px rgba(165, 42, 42, 0.3);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
-    .approve-btn {
-      background-color: green;
+    .button-group button:hover {
+      background-color: #7a1f1f;
+      box-shadow: 0 6px 10px rgba(122, 31, 31, 0.5);
     }
-    .reject-btn {
-      background-color: red;
-    }
-    input[type="text"] {
-      width: 80%;
-      padding: 5px;
-      margin-left: 5px;
-      margin-right: 5px;
-      border-radius: 3px;
-      border: 1px solid #ccc;
+    footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: #8b7d7d;
     }
   </style>
 </head>
 <body>
 
-  <h2>Principal Dashboard - Grade Approvals</h2>
-  <div id="container"></div>
+  <header>
+    <!-- Replace with your logo image if you have one -->
+    <img src="https://via.placeholder.com/100x100.png?text=Logo" alt="Tyneceploh Logo" />
+    <h1>Tyneceploh Educational Foundation</h1>
+  </header>
 
-  <script>
-    const container = document.getElementById("container");
-    // Load all pending grades submissions from localStorage
-    let submissions = JSON.parse(localStorage.getItem("pending_grades") || "[]");
+  <div class="welcome">Welcome, Principal</div>
 
-    // Save changes to localStorage and re-render
-    function saveUpdates() {
-      localStorage.setItem("pending_grades", JSON.stringify(submissions));
-      render();
-    }
+  <div class="button-group">
+    <button onclick="window.location.href='approval.html'">Grade Approval</button>
+    <button onclick="alert('Coming soon: Financial Records')">Financial Records</button>
+    <button onclick="alert('Coming soon: Teacher Management')">Teacher Management</button>
+    <button onclick="alert('Coming soon: Student Management')">Student Management</button>
+  </div>
 
-    // Render all submissions on the page
-    function render() {
-      container.innerHTML = "";
-      if (submissions.length === 0) {
-        container.innerHTML = "<p>No pending submissions available.</p>";
-        return;
-      }
-
-      submissions.forEach((student, index) => {
-        const div = document.createElement("div");
-        div.className = "student-card";
-
-        div.innerHTML = `
-          <h3>${student.name} (${student.period})</h3>
-          <p><strong>Submitted:</strong> ${student.timestamp}</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Grade</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${student.grades.map(g => `<tr><td>${g.subject}</td><td>${g.grade}</td></tr>`).join("")}
-            </tbody>
-          </table>
-          <div class="status ${student.status === 'approved' ? 'approved' : student.status === 'rejected' ? 'rejected' : ''}">
-            Status: ${student.status.toUpperCase()}${student.feedback ? " - " + student.feedback : ""}
-          </div>
-        `;
-
-        // Show Approve/Reject controls only if status is pending
-        if (student.status === "pending") {
-          // Approve button
-          const approveBtn = document.createElement("button");
-          approveBtn.textContent = "Approve";
-          approveBtn.className = "approve-btn";
-          approveBtn.onclick = () => {
-            student.status = "approved";
-            student.feedback = "Approved by principal";
-
-            // Move approved submission to approved_results in localStorage
-            const approved = JSON.parse(localStorage.getItem("approved_results") || "[]");
-            approved.push(student);
-            localStorage.setItem("approved_results", JSON.stringify(approved));
-
-            // Remove submission from pending list
-            submissions.splice(index, 1);
-            saveUpdates();
-          };
-
-          // Reject button and reason input
-          const rejectBtn = document.createElement("button");
-          rejectBtn.textContent = "Reject";
-          rejectBtn.className = "reject-btn";
-
-          const reasonInput = document.createElement("input");
-          reasonInput.type = "text";
-          reasonInput.placeholder = "Reason for rejection";
-
-          rejectBtn.onclick = () => {
-            const reason = reasonInput.value.trim();
-            if (!reason) {
-              alert("Please enter a reason to reject.");
-              return;
-            }
-            student.status = "rejected";
-            student.feedback = reason;
-            saveUpdates();
-          };
-
-          // Add buttons and input to card
-          div.appendChild(approveBtn);
-          div.appendChild(reasonInput);
-          div.appendChild(rejectBtn);
-        }
-
-        container.appendChild(div);
-      });
-    }
-
-    render();
-  </script>
+  <footer>
+    &copy; 2025 Tyneceploh Educational Foundation
+  </footer>
 
 </body>
 </html>
