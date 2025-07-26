@@ -130,14 +130,46 @@
       };
 
       submitBtn.onclick = function () {
-        submitted = true;
-        const inputs = studentDiv.querySelectorAll("input");
-        inputs.forEach(input => input.disabled = true);
-        const buttons = studentDiv.querySelectorAll("button");
-        buttons.forEach(btn => {
-          if (btn.textContent === "Delete") btn.disabled = true;
-        });
-      };
+  submitted = true;
+
+  const name = nameInput.value.trim();
+  const period = periodInput.value.trim();
+  const grades = [];
+
+  const rows = tbody.querySelectorAll("tr");
+  rows.forEach(row => {
+    const subject = row.cells[0].querySelector("input").value;
+    const grade = row.cells[1].querySelector("input").value;
+    if (subject && grade) {
+      grades.push({ subject, grade });
+    }
+  });
+
+  // Prepare submission object
+  const submission = {
+    name,
+    period,
+    grades,
+    status: "pending",
+    feedback: "",
+    timestamp: new Date().toLocaleString()
+  };
+
+  // Save to localStorage
+  const existing = JSON.parse(localStorage.getItem("pending_grades") || "[]");
+  existing.push(submission);
+  localStorage.setItem("pending_grades", JSON.stringify(existing));
+
+  // Lock inputs after submission
+  const inputs = studentDiv.querySelectorAll("input");
+  inputs.forEach(input => input.disabled = true);
+  const buttons = studentDiv.querySelectorAll("button");
+  buttons.forEach(btn => {
+    if (btn.textContent === "Delete") btn.disabled = true;
+  });
+
+  alert("Grades submitted to Principal for approval!");
+};
 
       // Append inputs
       studentDiv.appendChild(nameLabel);
