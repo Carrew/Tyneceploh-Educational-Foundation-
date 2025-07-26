@@ -5,91 +5,164 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #f8f8f8;
       padding: 20px;
     }
-    section {
-      margin-bottom: 30px;
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 10px;
+    h2 {
+      color: brown;
+      text-align: center;
     }
-    h2, h3 {
-      margin-top: 0;
-      color: #444;
+    .student-card {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-left: 5px solid brown;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px #ccc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    .status {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .approved {
+      color: green;
+    }
+    .rejected {
+      color: red;
     }
     button {
+      margin: 5px;
       padding: 6px 12px;
-      margin-top: 8px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
     }
-    textarea, input[type="text"] {
-      width: 100%;
-      padding: 6px;
-      margin-top: 6px;
+    .approve-btn {
+      background-color: green;
+    }
+    .reject-btn {
+      background-color: red;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 5px;
+      margin-left: 5px;
+      margin-right: 5px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
 
-  <h1>Principal Dashboard</h1>
-
-  <!-- Existing Dashboard Content -->
-  <section>
-    <h3>View / Approve Grades</h3>
-    <!-- Your existing grade management UI -->
-  </section>
-
-  <section>
-    <h3>Manage Student IDs</h3>
-    <!-- Your existing ID generator -->
-  </section>
-
-  <section>
-    <h3>Finance: Create Receipt</h3>
-    <!-- Your existing finance/receipt logic -->
-  </section>
-
-  <section>
-    <h3>Teacher Account Control</h3>
-    <!-- Your existing teacher activation logic -->
-  </section>
-
-  <!-- ✅ NEW: Save Announcement -->
-  <section>
-    <h3>Post School Announcement</h3>
-    <textarea id="announcementInput" rows="3" placeholder="Enter announcement..."></textarea><br>
-    <button onclick="saveAnnouncement()">Save Announcement</button>
-  </section>
-
-  <!-- ✅ NEW: Save School Logo -->
-  <section>
-    <h3>Upload School Logo</h3>
-    <input type="file" id="logoInput" accept="image/*"><br>
-    <button onclick="saveLogo()">Save Logo</button>
-  </section>
+  <h2>Principal Dashboard - Grade Approvals</h2>
+  <div id="container"></div>
 
   <script>
-    // ✅ Save announcement to localStorage
-    function saveAnnouncement() {
-      const announcement = document.getElementById("announcementInput").value;
-      localStorage.setItem("school_announcement", announcement);
-      alert("Announcement saved successfully!");
+    const container = document.getElementById("container");
+    // Load all pending grades submissions from localStorage
+    let submissions = JSON.parse(localStorage.getItem("pending_grades") || "[]");
+
+    // Save changes to localStorage and re-render
+    function saveUpdates() {
+      localStorage.setItem("pending_grades", JSON.stringify(submissions));
+      render();
     }
 
-    // ✅ Save logo as base64 to localStorage
-    function saveLogo() {
-      const file = document.getElementById("logoInput").files[0];
-      if (!file) {
-        alert("Please select a logo image.");
+    // Render all submissions on the page
+    function render() {
+      container.innerHTML = "";
+      if (submissions.length === 0) {
+        container.innerHTML = "<p>No pending submissions available.</p>";
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = function () {
-        localStorage.setItem("school_logo", reader.result);
-        alert("Logo saved successfully!");
-      };
-      reader.readAsDataURL(file);
+      submissions.forEach((student, index) => {
+        const div = document.createElement("div");
+        div.className = "student-card";
+
+        div.innerHTML = `
+          <h3>${student.name} (${student.period})</h3>
+          <p><strong>Submitted:</strong> ${student.timestamp}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${student.grades.map(g => `<tr><td>${g.subject}</td><td>${g.grade}</td></tr>`).join("")}
+            </tbody>
+          </table>
+          <div class="status ${student.status === 'approved' ? 'approved' : student.status === 'rejected' ? 'rejected' : ''}">
+            Status: ${student.status.toUpperCase()}${student.feedback ? " - " + student.feedback : ""}
+          </div>
+        `;
+
+        // Show Approve/Reject controls only if status is pending
+        if (student.status === "pending") {
+          // Approve button
+          const approveBtn = document.createElement("button");
+          approveBtn.textContent = "Approve";
+          approveBtn.className = "approve-btn";
+          approveBtn.onclick = () => {
+            student.status = "approved";
+            student.feedback = "Approved by principal";
+
+            // Move approved submission to approved_results in localStorage
+            const approved = JSON.parse(localStorage.getItem("approved_results") || "[]");
+            approved.push(student);
+            localStorage.setItem("approved_results", JSON.stringify(approved));
+
+            // Remove submission from pending list
+            submissions.splice(index, 1);
+            saveUpdates();
+          };
+
+          // Reject button and reason input
+          const rejectBtn = document.createElement("button");
+          rejectBtn.textContent = "Reject";
+          rejectBtn.className = "reject-btn";
+
+          const reasonInput = document.createElement("input");
+          reasonInput.type = "text";
+          reasonInput.placeholder = "Reason for rejection";
+
+          rejectBtn.onclick = () => {
+            const reason = reasonInput.value.trim();
+            if (!reason) {
+              alert("Please enter a reason to reject.");
+              return;
+            }
+            student.status = "rejected";
+            student.feedback = reason;
+            saveUpdates();
+          };
+
+          // Add buttons and input to card
+          div.appendChild(approveBtn);
+          div.appendChild(reasonInput);
+          div.appendChild(rejectBtn);
+        }
+
+        container.appendChild(div);
+      });
     }
+
+    render();
   </script>
 
 </body>
