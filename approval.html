@@ -63,13 +63,11 @@
 </div>
 
 <script>
-  const teacherClass = "Grade 6"; // You can make this dynamic from login if needed
-
   function loadPendingGrades() {
     const container = document.getElementById('gradesContainer');
     container.innerHTML = '';
 
-    // Collect all keys starting with grades_ and matching class
+    // Get all keys starting with 'grades_'
     const keys = Object.keys(localStorage).filter(k => k.startsWith('grades_'));
 
     if (keys.length === 0) {
@@ -81,14 +79,12 @@
 
     keys.forEach(key => {
       const data = JSON.parse(localStorage.getItem(key));
-      if (data.class !== teacherClass) return; // Only show grades for this class
-      
-      // Show only unapproved or rejected grades
+
+      // Show only unapproved grades
       if (data.approved === true) return;
 
       foundAny = true;
 
-      // Create grade entry
       const entryDiv = document.createElement('div');
       entryDiv.className = 'grade-entry';
 
