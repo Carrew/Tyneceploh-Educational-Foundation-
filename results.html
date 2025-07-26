@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Result Checker</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f9f9f9;
+    max-width: 600px;
+    margin: auto;
+  }
+  h2 {
+    text-align: center;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+  }
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+  button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  .result {
+    margin-top: 30px;
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #ccc;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background: #f2f2f2;
+  }
+  .error {
+    color: red;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h2>Student Result Checker</h2>
+
+<form id="resultForm">
+  <label for="studentName">Full Name:</label>
+  <input type="text" id="studentName" placeholder="Enter your full name" required />
+
+  <label for="studentPin">PIN:</label>
+  <input type="password" id="studentPin" placeholder="Enter your PIN" required />
+
+  <label for="studentClass">Class/Period:</label>
+  <input type="text" id="studentClass" placeholder="Enter your class (e.g., Grade 6)" required />
+
+  <button type="submit">Check Result</button>
+</form>
+
+<div id="resultDisplay"></div>
+
+<script>
+  // Sample student data with pins (replace this with your actual data or load from storage)
+  // Format: { fullNameLower: pin }
+  const studentPins = {
+    "john doe": "1234",
+    "jane smith": "5678",
+    "alice johnson": "abcd"
+  };
+
+  document.getElementById("resultForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const nameInput = document.getElementById("studentName").value.trim().toLowerCase();
+    const pinInput = document.getElementById("studentPin").value.trim();
+    const classInput = document.getElementById("studentClass").value.trim();
+
+    const resultDiv = document.getElementById("resultDisplay");
+    resultDiv.innerHTML = ""; // Clear previous result/error
+
+    // Validate name and pin
+    if (!(nameInput in studentPins)) {
+      resultDiv.innerHTML = '<p class="error">Student name not found.</p>';
+      return;
+    }
+    if (studentPins[nameInput] !== pinInput) {
+      resultDiv.innerHTML = '<p class="error">Invalid PIN.</p>';
+      return;
+    }
+
+    // Try to get grades from localStorage
+    const key = `grades_${classInput}_${nameInput}`;
+    const gradeDataStr = localStorage.getItem(key);
+
+    if (!gradeDataStr) {
+      resultDiv.innerHTML = `<p class="error">No grades found for ${capitalizeName(nameInput)} in ${classInput}.</p>`;
+      return;
+    }
+
+    const gradeData = JSON.parse(gradeDataStr);
+
+    // Check if approved
+    if (!gradeData.approved) {
+      resultDiv.innerHTML = `<p class="error">Grades for ${capitalizeName(nameInput)} in ${classInput} are not approved yet.</p>`;
+      return;
+    }
+
+    // Show grades
+    let html = `<div class="result">
+      <h3>Results for ${capitalizeName(nameInput)} - ${gradeData.class}</h3>
+      <table>
+        <thead><tr><th>Subject</th><th>Score</th></tr></thead>
+        <tbody>
+          ${gradeData.grades.map(g => `<tr><td>${g.subject}</td><td>${g.score}</td></tr>`).join('')}
+          <tr><td><strong>Average</strong></td><td><strong>${gradeData.average}</strong></td></tr>
+        </tbody>
+      </table>
+    </div>`;
+
+    resultDiv.innerHTML = html;
+  });
+
+  function capitalizeName(name) {
+    return name.split(' ').map(word =>
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  }
+</script>
+
+</body>
+</html>
