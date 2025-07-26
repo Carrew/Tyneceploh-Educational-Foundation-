@@ -2,42 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tyneceploh Student Results</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background: #f0f0f0;
-      color: #333;
+      background: #f9f9f9;
+      max-width: 700px;
+      margin: auto;
     }
     h2 {
       text-align: center;
-    }
-    .input-area {
-      text-align: center;
+      color: brown;
       margin-bottom: 20px;
     }
-    input, button {
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
       padding: 10px;
-      margin: 5px;
+      margin-top: 5px;
+      box-sizing: border-box;
       border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      background-color: brown;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1em;
+    }
+    button:hover {
+      background-color: darkred;
+    }
+    .result-box {
+      background: white;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-      display: none;
-      background: #fff;
+      margin-top: 15px;
     }
     th, td {
-      padding: 8px;
+      border: 1px solid #ddd;
+      padding: 10px;
       text-align: center;
-      border: 1px solid #ccc;
     }
     th {
-      background: #333;
-      color: white;
+      background: #f2f2f2;
     }
     .red {
       color: red;
@@ -48,82 +73,94 @@
       font-weight: bold;
     }
     #printBtn {
-      display: none;
       margin-top: 20px;
-      padding: 10px 20px;
-      background: green;
-      color: white;
-      border: none;
-      cursor: pointer;
+      background-color: green;
+      width: auto;
+      padding: 8px 16px;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h2>Student Result Checker</h2>
 
-  <div class="input-area">
-    <input type="text" id="studentName" placeholder="Enter Student Name" required />
-    <input type="password" id="studentPIN" placeholder="Enter PIN" required />
-    <button onclick="checkResult()">Check Result</button>
-  </div>
+  <h2>Check Your Results</h2>
 
-  <table id="resultTable">
-    <thead>
-      <tr>
-        <th>Subject</th>
-        <th>1st</th>
-        <th>2nd</th>
-        <th>3rd</th>
-        <th>Semester Exam</th>
-        <th>Semester Avg</th>
-        <th>4th</th>
-        <th>5th</th>
-        <th>6th</th>
-        <th>Final Exam</th>
-        <th>Year Avg</th>
-      </tr>
-    </thead>
-    <tbody id="resultBody">
-      <!-- Results will appear here -->
-    </tbody>
-  </table>
+  <label for="studentName">Student Name</label>
+  <input type="text" id="studentName" placeholder="Enter your full name" />
 
-  <div style="text-align:center">
-    <button id="printBtn" onclick="window.print()">Print Result</button>
-  </div>
+  <label for="studentPeriod">Period</label>
+  <input type="text" id="studentPeriod" placeholder="Enter your period/class" />
+
+  <button onclick="checkResults()">View Results</button>
+
+  <div id="resultContainer"></div>
+
+  <button id="printBtn" onclick="window.print()">Print Result</button>
 
   <script>
-    function checkResult() {
-      const name = document.getElementById('studentName').value;
-      const pin = document.getElementById('studentPIN').value;
+    function checkResults() {
+      const nameInput = document.getElementById("studentName").value.trim().toLowerCase();
+      const periodInput = document.getElementById("studentPeriod").value.trim().toLowerCase();
+      const container = document.getElementById("resultContainer");
+      const printBtn = document.getElementById("printBtn");
+      printBtn.style.display = "none";
+      container.innerHTML = "";
 
-      if (pin !== "1234") {
-        alert("Incorrect PIN. Try again.");
+      if (!nameInput || !periodInput) {
+        alert("Please enter both your name and period.");
         return;
       }
 
-      const subjects = ["Math", "English", "Science"];
-      const tableBody = document.getElementById("resultBody");
-      tableBody.innerHTML = ""; // clear old data
+      const approved = JSON.parse(localStorage.getItem("approved_results") || "[]");
 
-      subjects.forEach(subject => {
-        const scores = Array.from({ length: 10 }, () => Math.floor(Math.random() * 41 + 60)); // random 60–100
-        const semAvg = Math.round((scores[0] + scores[1] + scores[2] + scores[3]) / 4);
-        const yrAvg = Math.round((scores[4] + scores[5] + scores[6] + scores[7] + scores[8] + scores[9]) / 6);
+      // Find matching approved record
+      const student = approved.find(sub => 
+        sub.name.toLowerCase() === nameInput && sub.period.toLowerCase() === periodInput
+      );
 
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${subject}</td>
-          ${scores.map(score => `<td class="${score < 70 ? 'red' : 'blue'}">${score}</td>`).join('')}
-          <td class="${semAvg < 70 ? 'red' : 'blue'}">${semAvg}</td>
-          <td class="${yrAvg < 70 ? 'red' : 'blue'}">${yrAvg}</td>
-        `;
-        tableBody.appendChild(row);
-      });
+      if (!student) {
+        container.innerHTML = "<p>No approved results found for this name and period.</p>";
+        return;
+      }
 
-      document.getElementById("resultTable").style.display = "table";
-      document.getElementById("printBtn").style.display = "inline-block";
+      // Build result table
+      let total = 0;
+      let count = 0;
+      let rowsHtml = student.grades.map(g => {
+        const gradeNum = parseFloat(g.grade);
+        const colorClass = (gradeNum >= 70) ? "blue" : "red";
+        if (!isNaN(gradeNum)) {
+          total += gradeNum;
+          count++;
+        }
+        return `<tr><td>${g.subject}</td><td class="${colorClass}">${g.grade}</td></tr>`;
+      }).join("");
+
+      const average = count > 0 ? (total / count).toFixed(2) : "N/A";
+
+      container.innerHTML = `
+        <div class="result-box">
+          <h3>Results for ${student.name} (${student.period})</h3>
+          <p><strong>Submitted:</strong> ${student.timestamp}</p>
+          <table>
+            <thead>
+              <tr><th>Subject</th><th>Grade</th></tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><strong>Average</strong></td>
+                <td><strong>${average}</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      `;
+      printBtn.style.display = "inline-block";
     }
   </script>
+
 </body>
 </html>
