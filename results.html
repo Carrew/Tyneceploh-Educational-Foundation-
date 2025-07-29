@@ -31,7 +31,7 @@
       border-radius: 5px;
     }
     button {
-      background: #e91e63; /* Pink button */
+      background: #e91e63;
       color: white;
       border: none;
       padding: 10px;
@@ -47,6 +47,7 @@
       text-align: center;
       margin-top: 20px;
       font-weight: bold;
+      color: #333;
     }
   </style>
 </head>
@@ -80,14 +81,14 @@
       .then(data => {
         if (data.success) {
           document.getElementById("result").innerText = `✅ Welcome ${data.name}, Class: ${data.class}`;
-          // Optional: redirect user to student dashboard
+          // Optionally redirect:
           // window.location.href = "student_dashboard.html";
         } else {
           document.getElementById("result").innerText = `❌ Login failed: ${data.message}`;
         }
       })
       .catch(error => {
-        document.getElementById("result").innerText = "❗ Error: " + error;
+        document.getElementById("result").innerText = "❗ Error: " + error.message;
       });
     });
   </script>
