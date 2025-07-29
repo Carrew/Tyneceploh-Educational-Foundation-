@@ -8,7 +8,7 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background: #f5f5f5;
+      background: #f9f9f9;
     }
     h2 {
       text-align: center;
@@ -47,7 +47,7 @@
       text-align: center;
       margin-top: 20px;
       font-weight: bold;
-      color: #333;
+      color: red;
     }
   </style>
 </head>
@@ -70,7 +70,7 @@
       const studentID = document.getElementById("student_id").value.trim();
       const pin = document.getElementById("pin").value.trim();
 
-      fetch("https://script.google.com/macros/s/AKfycbz8ckoG-lrzwPLqYG1L6QGDxLNZU-HH_dhyj5tlw0DvD-qtAUHaTkvDa5nvVN8_2XWI/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbxUjqVCbkzUPPptFJQi6wbrmqUEA2Ik84xEHDm4XGHzfs70MtI_Afy4atAtiqh1GAA/exec", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -80,14 +80,17 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
+          document.getElementById("result").style.color = "green";
           document.getElementById("result").innerText = `✅ Welcome ${data.name}, Class: ${data.class}`;
-          // Optionally redirect:
+          // TODO: redirect to student dashboard if you have one
           // window.location.href = "student_dashboard.html";
         } else {
+          document.getElementById("result").style.color = "red";
           document.getElementById("result").innerText = `❌ Login failed: ${data.message}`;
         }
       })
       .catch(error => {
+        document.getElementById("result").style.color = "red";
         document.getElementById("result").innerText = "❗ Error: " + error.message;
       });
     });
